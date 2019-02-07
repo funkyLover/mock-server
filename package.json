@@ -1,0 +1,57 @@
+{
+  "name": "mock-server",
+  "version": "0.3.0",
+  "description": "mock your data with an node server",
+  "main": "index.js",
+  "scripts": {
+    "lint:checked": "node_modules/.bin/eslint --print-config . | eslint-config-prettier-check",
+    "test": "npm run test:cli && npm run test:server",
+    "test:cli": "node test/cli/run.js",
+    "test:server": "jest"
+  },
+  "keywords": [
+    "mock"
+  ],
+  "author": "ahuilin@tencent.com",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "chokidar": "^2.1.0",
+    "commander": "^2.19.0",
+    "http-proxy-middleware": "^0.19.1",
+    "koa": "^2.7.0",
+    "koa2-connect": "^1.0.2",
+    "tcp-port-used": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.13.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-html": "^5.0.3",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "husky": "^1.3.1",
+    "jest": "^24.0.0",
+    "lint-staged": "^8.1.3",
+    "prettier": "^1.16.4",
+    "prettier-eslint-cli": "^4.7.1",
+    "should": "^13.2.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "prettier --write",
+        "node_modules/.bin/eslint --quiet",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "./example/**"
+    ]
+  }
+}
