@@ -5,6 +5,7 @@ const { getStatus, startMock } = require('../lib/server/index');
 jest.mock('chokidar');
 jest.mock('../lib/getMock');
 jest.mock('koa');
+global.console = { error: jest.fn() };
 
 let KoaMockFn = () => {
   return {
@@ -78,6 +79,7 @@ test('mock server will not be started when error', async () => {
   });
 
   const res = startMock('.', '8080');
+  expect(console.error).toBeCalled();
   expect(res).toBe(false);
   expect(getStatus().server).toBe(null);
   expect(getStatus().mock).toMatchObject({});
