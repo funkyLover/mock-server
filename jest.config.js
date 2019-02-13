@@ -30,12 +30,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['/node_modules/', '/test/cli/'],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
+  coverageReporters: ['json', 'text', 'lcov', 'clover'],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
@@ -137,7 +132,8 @@ module.exports = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    '**/test/*.[jt]s?(x)'
+    '**/test/*.[jt]s?(x)',
+    '**/test/fe/*.[jt]s?(x)'
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ]
 
