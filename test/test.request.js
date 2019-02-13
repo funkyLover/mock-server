@@ -36,7 +36,7 @@ test('it will return code: 1 from mock', () => {
 
   return instance.get('').then(res => {
     expect(res.status).toBe(200);
-    expect(res.data).toMatchObject(data);
+    expect(res.data).toEqual(data);
     server.close();
   });
 });
@@ -65,7 +65,7 @@ test('it will return code: 2 from mock(multiple mock)', () => {
 
   return instance.get('').then(res => {
     expect(res.status).toBe(200);
-    expect(res.data).toMatchObject(data);
+    expect(res.data).toEqual(data);
     server.close();
   });
 });
@@ -98,7 +98,7 @@ test('it will return code: 3 from mock(multiple api mock)', () => {
 
   return instance.get('/api').then(res => {
     expect(res.status).toBe(200);
-    expect(res.data).toMatchObject(data);
+    expect(res.data).toEqual(data);
     server.close();
   });
 });
@@ -134,7 +134,7 @@ test('it will cost over 500ms for the request', () => {
   return instance.get('/api').then(res => {
     const cost = Date.now() - start;
     expect(res.status).toBe(200);
-    expect(res.data).toMatchObject(data);
+    expect(res.data).toEqual(data);
     expect(cost).toBeGreaterThan(500);
     server.close();
   });
@@ -171,7 +171,7 @@ test('it will return 404 for the request', () => {
     () => {},
     res => {
       expect(res.response.status).toBe(404);
-      expect(res.response.data).toMatchObject(data);
+      expect(res.response.data).toEqual(data);
       server.close();
     }
   );

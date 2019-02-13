@@ -63,7 +63,7 @@ test('mock server will be started when koa success setup an server', async () =>
 
   const res = startMock('.', '8080');
   expect(res).toBe(true);
-  expect(getStatus().server).toMatchObject({ port: '8080' });
+  expect(getStatus().server).toEqual({ port: '8080' });
 });
 
 test('mock server will not be started when error', async () => {
@@ -82,5 +82,5 @@ test('mock server will not be started when error', async () => {
   expect(console.error).toBeCalled();
   expect(res).toBe(false);
   expect(getStatus().server).toBe(null);
-  expect(getStatus().mock).toMatchObject({});
+  expect(getStatus().mock).toEqual({});
 });

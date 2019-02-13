@@ -41,7 +41,7 @@ test('it will return from mock server', () => {
 
   return instance.get('/api').then(res => {
     expect(res.status).toBe(200);
-    expect(res.data).toMatchObject({ code: 1 });
+    expect(res.data).toEqual({ code: 1 });
     server.close();
   });
 });
