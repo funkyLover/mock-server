@@ -9,9 +9,11 @@ const val = {
 cli.action(function(cmd) {
   val.dir = cmd.dir;
   val.port = cmd.port;
+  val.hasPortOpt = cmd.hasPortOpt;
 });
 
 cli.parse(['node', 'mock', '-d', '.']);
 
-val.should.have.property('port', undefined);
+val.should.have.property('port', '8888');
 val.should.have.property('dir', '.');
+val.should.have.property('hasPortOpt', false);

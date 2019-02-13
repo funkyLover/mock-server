@@ -5,23 +5,23 @@ const current = __dirname;
 const parent = resolve(current, '..');
 
 test('input "." return current exec path with mock', () => {
-  expect(getMockPath('.')).toBe(join(parent, 'mock'));
+  expect(getMockPath('.')).toBe(join(parent));
 });
 
 test('input ".." return parent dir path with mock', () => {
-  expect(getMockPath('..')).toBe(resolve(parent, '..', 'mock'));
+  expect(getMockPath('..')).toBe(resolve(parent, '..'));
 });
 
 test('input relative "./aaa" path', () => {
-  expect(getMockPath('./aaa')).toBe(resolve(parent, 'aaa', 'mock'));
+  expect(getMockPath('./aaa')).toBe(resolve(parent, 'aaa'));
 });
 
 test('input absolute "/" path', () => {
-  expect(getMockPath('/')).toBe('/mock');
+  expect(getMockPath('/')).toBe('/');
 });
 
 test('input absolute "/Users/xxx" path', () => {
-  expect(getMockPath('/Users/xxx')).toBe('/Users/xxx/mock');
+  expect(getMockPath('/Users/xxx')).toBe('/Users/xxx');
 });
 
 test('return false when mock is file', () => {

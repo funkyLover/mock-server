@@ -3,12 +3,18 @@
   "version": "0.3.1",
   "description": "mock your data with an node server",
   "main": "index.js",
+  "bin": {
+    "mock": "./bin/index.js"
+  },
   "scripts": {
-    "lint:checked": "node_modules/.bin/eslint --print-config . | eslint-config-prettier-check",
+    "dev:fe": "cd fe && npm run serve",
     "test": "npm run test:cli && npm run test:server",
     "test:cli": "node test/cli/run.js",
     "test:server": "jest",
-    "test:coverage": "jest --coverage"
+    "test:fe": "cd fe && npm run test:unit",
+    "test:coverage": "jest --coverage",
+    "test:fe:coverage": "cd fe && npm run test:unit",
+    "lint:checked": "node_modules/.bin/eslint --print-config . | eslint-config-prettier-check"
   },
   "keywords": [
     "mock"
