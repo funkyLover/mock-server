@@ -1,7 +1,8 @@
 const chokidar = require('chokidar');
 const Koa = require('koa');
 const mock = require('../lib/getMock');
-const { getStatus, startMock } = require('../lib/server/index');
+const { startMock } = require('../lib/server/index');
+const { getStatus } = require('../lib/server/status');
 jest.mock('chokidar');
 jest.mock('../lib/getMock');
 jest.mock('koa');

@@ -2,9 +2,10 @@ const Koa = require('koa');
 const axios = require('axios');
 const mockMiddleware = require('../lib/server/mock');
 const proxyMiddleware = require('../lib/server/proxy');
-const { getStatus } = require('../lib/server/index');
+const { getStatus } = require('../lib/server/status');
 
 jest.mock('../lib/server/index');
+jest.mock('../lib/server/status');
 
 const defaultMock = {
   delay: 0.1,
