@@ -7,6 +7,8 @@
     "mock": "./bin/index.js"
   },
   "scripts": {
+    "dev": "npm run dev:mock && npm run dev:fe",
+    "dev:mock": "node ./bin/index.js -p 8888 -d ./fe/mock",
     "dev:fe": "cd fe && npm run serve",
     "test": "npm run test:cli && npm run test:server",
     "test:cli": "node test/cli/run.js",
