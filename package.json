@@ -49,7 +49,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && cd fe && lint-staged"
+      "pre-commit": "npm test && lint-staged && cd fe && lint-staged"
     }
   },
   "lint-staged": {
