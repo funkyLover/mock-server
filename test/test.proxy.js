@@ -18,11 +18,21 @@ const defaultMock = {
   data: { code: 1 }
 };
 
-test('it will return from mock server', () => {
+function setupEnv(port, proxyPory) {
   const instance = axios.create({
     baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8880 }
+    proxy: { host: '127.0.0.1', port: port }
   });
+
+  const app = new Koa();
+  app.use(mockMiddleware);
+  app.use(proxyMiddleware);
+  const server = app.listen(port);
+
+  return { instance, server };
+}
+
+test('it will return from mock server', () => {
   getStatus.mockImplementationOnce(() => {
     return {
       mock: {
@@ -35,10 +45,7 @@ test('it will return from mock server', () => {
     };
   });
 
-  const app = new Koa();
-  app.use(mockMiddleware);
-  app.use(proxyMiddleware);
-  const server = app.listen(8880);
+  const { server, instance } = setupEnv(8880);
 
   return instance.get('/api').then(res => {
     expect(res.status).toBe(200);
@@ -48,33 +55,26 @@ test('it will return from mock server', () => {
 });
 
 test('it will return from target server', () => {
-  const instance = axios.create({
-    baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8880 }
-  });
   getStatus.mockImplementation(() => {
     return {
       mock: {
         'api.mock.com/api': [defaultMock, defaultMock],
         _proxy: {
-          'api.mock.com': 'http://127.0.0.1:8881'
+          'api.mock.com': 'http://127.0.0.1:8882'
         }
       },
       mockChecked: { 'api.mock.com/api': 1 }
     };
   });
 
-  const app = new Koa();
-  app.use(mockMiddleware);
-  app.use(proxyMiddleware);
-  const server = app.listen(8880);
+  const { server, instance } = setupEnv(8881);
 
   const targetApp = new Koa();
   const msg = 'return from target server';
   targetApp.use(ctx => {
     ctx.body = msg;
   });
-  const targetServer = targetApp.listen(8881);
+  const targetServer = targetApp.listen(8882);
 
   return instance.get('/api2').then(res => {
     expect(res.status).toBe(200);

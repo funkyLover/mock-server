@@ -6,6 +6,19 @@ const { getStatus } = require('../lib/server/status');
 jest.mock('../lib/server/index');
 jest.mock('../lib/server/status');
 
+function setEnv(port) {
+  const instance = axios.create({
+    baseURL: 'http://api.mock.com',
+    proxy: { host: '127.0.0.1', port: port }
+  });
+
+  const app = new Koa();
+  app.use(mockMiddleware);
+  const server = app.listen(port);
+
+  return { instance, server };
+}
+
 const defaultHeader = {
   delay: 0.1,
   status: 200,
@@ -17,10 +30,6 @@ const defaultHeader = {
 };
 
 test('it will return code: 1 from mock', () => {
-  const instance = axios.create({
-    baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8080 }
-  });
   const data = { code: 1 };
   getStatus.mockImplementationOnce(() => {
     return {
@@ -31,9 +40,7 @@ test('it will return code: 1 from mock', () => {
     };
   });
 
-  const app = new Koa();
-  app.use(mockMiddleware);
-  const server = app.listen(8080);
+  const { instance, server } = setEnv(8080);
 
   return instance.get('').then(res => {
     expect(res.status).toBe(200);
@@ -43,10 +50,6 @@ test('it will return code: 1 from mock', () => {
 });
 
 test('it will return code: 2 from mock(multiple mock)', () => {
-  const instance = axios.create({
-    baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8081 }
-  });
   const data = { code: 2 };
   getStatus.mockImplementationOnce(() => {
     return {
@@ -59,10 +62,7 @@ test('it will return code: 2 from mock(multiple mock)', () => {
       mockChecked: { 'api.mock.com': 1 }
     };
   });
-
-  const app = new Koa();
-  app.use(mockMiddleware);
-  const server = app.listen(8081);
+  const { instance, server } = setEnv(8081);
 
   return instance.get('').then(res => {
     expect(res.status).toBe(200);
@@ -72,10 +72,6 @@ test('it will return code: 2 from mock(multiple mock)', () => {
 });
 
 test('it will return code: 3 from mock(multiple api mock)', () => {
-  const instance = axios.create({
-    baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8082 }
-  });
   const data = { code: 3 };
   getStatus.mockImplementationOnce(() => {
     return {
@@ -93,9 +89,7 @@ test('it will return code: 3 from mock(multiple api mock)', () => {
     };
   });
 
-  const app = new Koa();
-  app.use(mockMiddleware);
-  const server = app.listen(8082);
+  const { instance, server } = setEnv(8082);
 
   return instance.get('/api').then(res => {
     expect(res.status).toBe(200);
@@ -105,10 +99,6 @@ test('it will return code: 3 from mock(multiple api mock)', () => {
 });
 
 test('it will cost over 500ms for the request', () => {
-  const instance = axios.create({
-    baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8083 }
-  });
   const data = { code: 3 };
   getStatus.mockImplementationOnce(() => {
     return {
@@ -127,9 +117,7 @@ test('it will cost over 500ms for the request', () => {
     };
   });
 
-  const app = new Koa();
-  app.use(mockMiddleware);
-  const server = app.listen(8083);
+  const { instance, server } = setEnv(8083);
 
   const start = Date.now();
   return instance.get('/api').then(res => {
@@ -142,10 +130,6 @@ test('it will cost over 500ms for the request', () => {
 });
 
 test('it will return 404 for the request', () => {
-  const instance = axios.create({
-    baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8084 }
-  });
   const data = { code: 3 };
   getStatus.mockImplementationOnce(() => {
     return {
@@ -164,9 +148,7 @@ test('it will return 404 for the request', () => {
     };
   });
 
-  const app = new Koa();
-  app.use(mockMiddleware);
-  const server = app.listen(8084);
+  const { instance, server } = setEnv(8084);
 
   return instance.get('/api').then(
     () => {},
@@ -179,11 +161,7 @@ test('it will return 404 for the request', () => {
 });
 
 test('it will return string data for the request', () => {
-  const instance = axios.create({
-    baseURL: 'http://api.mock.com',
-    proxy: { host: '127.0.0.1', port: 8085 }
-  });
-  // @NOTE: 如果data为对象, 并不会反悔对应的JSON字符创
+  // @NOTE: 如果data为对象, 并不会返回对应的JSON字符串
   //        是axios自动转的吗?
   const data = 'string data';
   getStatus.mockImplementationOnce(() => {
@@ -205,9 +183,7 @@ test('it will return string data for the request', () => {
     };
   });
 
-  const app = new Koa();
-  app.use(mockMiddleware);
-  const server = app.listen(8085);
+  const { instance, server } = setEnv(8085);
 
   return instance.get('/api').then(res => {
     expect(res.status).toBe(200);
