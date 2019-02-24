@@ -1,6 +1,6 @@
 {
   "name": "mock-server",
-  "version": "0.3.1",
+  "version": "0.5.0",
   "description": "mock your data with an node server",
   "main": "index.js",
   "bin": {
@@ -10,6 +10,7 @@
     "dev": "npm run dev:mock && npm run dev:fe",
     "dev:mock": "node ./bin/index.js -p 8888 -d ./fe/mock",
     "dev:fe": "cd fe && npm run serve",
+    "build:fe": "cd fe && npm run build",
     "test": "npm run test:cli && npm run test:server",
     "test:cli": "node test/cli/run.js",
     "test:server": "jest",
