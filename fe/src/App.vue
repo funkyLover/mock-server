@@ -1,26 +1,21 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png" />
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      <el-button @click="bindGetMocks">el-button</el-button>
-    </div>
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <el-container class="app">
+    <el-header class="app-header"><p>Mock Server</p></el-header>
+    <el-container>
+      <el-aside class="app-menu">
+        aside
+      </el-aside>
+      <el-main class="app-content">
+        main
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-
 export default {
   name: 'app',
-  components: {
-    HelloWorld
-  },
+  components: {},
   methods: {
     async bindGetMocks() {
       const { $req, $awaitTo } = this;
@@ -35,12 +30,8 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import './styles/app.scss';
+
+.app .app-header {
 }
 </style>

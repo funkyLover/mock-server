@@ -6,6 +6,8 @@ import './plugins/element.js';
 import './plugins/async';
 import './plugins/request';
 
+import 'normalize.css';
+
 Vue.config.productionTip = false;
 
 new Vue({

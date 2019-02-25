@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "element-ui": "^2.4.5",
+    "normalize.css": "^8.0.1",
     "vue": "^2.5.22",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
