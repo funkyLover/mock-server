@@ -1,6 +1,6 @@
 {
   "name": "mock-server",
-  "version": "0.5.0",
+  "version": "0.8.0",
   "description": "mock your data with an node server",
   "main": "index.js",
   "bin": {
@@ -32,6 +32,7 @@
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "koa2-connect": "^1.0.2",
+    "lodash": "^4.17.11",
     "tcp-port-used": "^1.0.1"
   },
   "devDependencies": {
