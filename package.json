@@ -1,10 +1,14 @@
 {
   "name": "mock-server",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "mock your data with an node server",
   "main": "index.js",
   "bin": {
     "mock": "./bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/funkyLover/mock-server.git"
   },
   "scripts": {
     "dev": "npm run dev:mock & npm run dev:fe",
@@ -67,5 +71,6 @@
       "./example/**",
       "./fe/**"
     ]
-  }
+  },
+  "license": "MIT"
 }
