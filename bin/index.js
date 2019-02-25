@@ -27,4 +27,7 @@ if (isServerUp) {
 
   console.log('you can access mock server:');
   console.log(localIp.map(i => `http://${i} \n`).join(''));
+
+  console.log('you can access mock server view:');
+  console.log(localIp.map(i => `http://${i}/view \n`).join(''));
 }
