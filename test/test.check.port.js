@@ -7,7 +7,7 @@ test('return 8080 when input 8080 is idle', async () => {
   tcpPortUsed.check.mockResolvedValue(false);
 
   return getPort('8080').then(port => {
-    expect(port).toBe('8080');
+    expect(port).toBe(8080);
   });
 });
 
@@ -16,7 +16,7 @@ test('return 8081 when input 8080 is busy and 8081 is idle', async () => {
   tcpPortUsed.check.mockResolvedValueOnce(false);
 
   return getPort('8080').then(port => {
-    expect(port).toBe('8081');
+    expect(port).toBe(8081);
   });
 });
 
@@ -25,6 +25,6 @@ test('return 8081 when error occurred checking 8080', async () => {
   tcpPortUsed.check.mockResolvedValueOnce(false);
 
   return getPort('8080').then(port => {
-    expect(port).toBe('8081');
+    expect(port).toBe(8081);
   });
 });
