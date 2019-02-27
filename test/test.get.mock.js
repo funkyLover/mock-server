@@ -41,7 +41,8 @@ test('return false when mock dir is exist', () => {
 
 test('return empty object when mock data is not exist(input an exist mock path)', () => {
   expect(getMock('./example/empty')).toEqual({
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -64,7 +65,8 @@ test('return mock object when mock data is exist(example/simple)', () => {
         }
       }
     ],
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -83,7 +85,8 @@ test('return mock object when mock data is exist(example/data in json file)', ()
         }
       }
     ],
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -102,7 +105,8 @@ test('return mock object when mock data is exist(example/data in file(not js || 
         }
       }
     ],
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -121,7 +125,8 @@ test('return mock object when mock data is exist(example/http delay 2s)', () => 
         }
       }
     ],
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -140,7 +145,8 @@ test('return mock object when mock data is exist(example/status 404)', () => {
         }
       }
     ],
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -159,7 +165,8 @@ test('return mock object when mock data is exist(example/http keep alive)', () =
         }
       }
     ],
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -180,7 +187,8 @@ test('return mock object when mock data is exist(example/with proxy)', () => {
     ],
     _proxy: {
       'api.mock.com': 'https://www.xxx.yy.zzz'
-    }
+    },
+    _set: {}
   });
 });
 
@@ -200,7 +208,8 @@ test('return mock object when mock data is exist(example/with proxy dir)', () =>
         }
       }
     ],
-    _proxy: {}
+    _proxy: {},
+    _set: {}
   });
 });
 
@@ -270,6 +279,23 @@ test('return mock object when mock data is exist(example/multiple options)', () 
     _proxy: {
       'api.mock.com': 'https://www.xxx.yy.zzz',
       'api.mock2.com': 'https://www2.xxx.yy.zzz'
-    }
+    },
+    _set: {}
   });
+});
+
+test('it will get an mock set data', () => {
+  const mockData = getMock('./example/data with mock set');
+  const mockSet = mockData._set;
+
+  const expectObj = {
+    'api.mock.com/api1': expect.objectContaining({
+      data: { code: '1', msg: 'not ok' }
+    }),
+    'api.mock.com/api2': expect.objectContaining({
+      data: { code: '0', msg: 'ok' }
+    })
+  };
+
+  expect(mockSet['api flow']).toMatchObject(expectObj);
 });
