@@ -51,7 +51,7 @@ test('mock will update when mock file change', async () => {
   expect(getStatus().mock).toBe(2);
 });
 
-test('mock server will be started when koa success setup an server', async () => {
+test('mock server will be started when koa success setup a server', async () => {
   chokidar.watch.mockImplementationOnce(chokidarWatchMockFn);
   Koa.mockImplementationOnce(() => {
     return {
@@ -84,4 +84,5 @@ test('mock server will not be started when error', async () => {
   expect(res).toBe(false);
   expect(getStatus().server).toBe(null);
   expect(getStatus().mock).toEqual({});
+  expect(getStatus().setChecked).toEqual(null);
 });

@@ -1,7 +1,7 @@
 {
   "name": "mock-server",
-  "version": "0.8.1",
-  "description": "mock your data with an node server",
+  "version": "0.9.0",
+  "description": "mock your apis with a node server",
   "main": "index.js",
   "bin": {
     "mock": "./bin/index.js"

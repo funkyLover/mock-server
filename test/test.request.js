@@ -19,7 +19,7 @@ function setEnv(port) {
   return { instance, server };
 }
 
-const defaultHeader = {
+const defaultConfig = {
   delay: 0.1,
   status: 200,
   header: {
@@ -34,7 +34,7 @@ test('it will return code: 1 from mock', () => {
   getStatus.mockImplementationOnce(() => {
     return {
       mock: {
-        'api.mock.com': [{ data, ...defaultHeader }]
+        'api.mock.com': [{ data, ...defaultConfig }]
       },
       mockChecked: { 'api.mock.com': 0 }
     };
@@ -55,8 +55,8 @@ test('it will return code: 2 from mock(multiple mock)', () => {
     return {
       mock: {
         'api.mock.com': [
-          { data: { code: 1 }, ...defaultHeader },
-          { data, ...defaultHeader }
+          { data: { code: 1 }, ...defaultConfig },
+          { data, ...defaultConfig }
         ]
       },
       mockChecked: { 'api.mock.com': 1 }
@@ -77,10 +77,10 @@ test('it will return code: 3 from mock(multiple api mock)', () => {
     return {
       mock: {
         'api.mock.com': [
-          { data: { code: 1 }, ...defaultHeader },
-          { data: { code: 2 }, ...defaultHeader }
+          { data: { code: 1 }, ...defaultConfig },
+          { data: { code: 2 }, ...defaultConfig }
         ],
-        'api.mock.com/api': [{ data, ...defaultHeader }]
+        'api.mock.com/api': [{ data, ...defaultConfig }]
       },
       mockChecked: {
         'api.mock.com': 1,
@@ -106,7 +106,7 @@ test('it will cost over 500ms for the request', () => {
         'api.mock.com/api': [
           {
             data,
-            ...defaultHeader,
+            ...defaultConfig,
             ...{ delay: 0.5 }
           }
         ]
@@ -137,7 +137,7 @@ test('it will return 404 for the request', () => {
         'api.mock.com/api': [
           {
             data,
-            ...defaultHeader,
+            ...defaultConfig,
             ...{ status: 404 }
           }
         ]
@@ -170,7 +170,7 @@ test('it will return string data for the request', () => {
         'api.mock.com/api': [
           {
             data,
-            ...defaultHeader,
+            ...defaultConfig,
             ...{
               header: { 'Content-Type': 'text/plain; charset=UTF-8' }
             }
@@ -188,6 +188,32 @@ test('it will return string data for the request', () => {
   return instance.get('/api').then(res => {
     expect(res.status).toBe(200);
     expect(res.data).toBe(data);
+    server.close();
+  });
+});
+
+test('it will match the mock set', () => {
+  const data1 = { code: 1 };
+  const data2 = { code: 2 };
+  getStatus.mockImplementationOnce(() => {
+    return {
+      mock: {
+        'api.mock.com': [{ data: data1, ...defaultConfig }],
+        _set: {
+          'a set of mock': {
+            'api.mock.com': { data: data2, ...defaultConfig }
+          }
+        }
+      },
+      mockChecked: { 'api.mock.com': 0 },
+      setChecked: 'a set of mock'
+    };
+  });
+  const { instance, server } = setEnv(8086);
+
+  return instance.get('').then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual(data2);
     server.close();
   });
 });

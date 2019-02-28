@@ -284,7 +284,7 @@ test('return mock object when mock data is exist(example/multiple options)', () 
   });
 });
 
-test('it will get an mock set data', () => {
+test('it will get a mock set data', () => {
   const mockData = getMock('./example/data with mock set');
   const mockSet = mockData._set;
 

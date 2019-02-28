@@ -59,10 +59,13 @@ test('it will return mock data when request "/$mock" by local ip(127.0.0.1)', ()
 test('it will return 404', () => {
   const { instance, server } = setupEnv(8892);
 
-  return instance.get('/whatever').then(res => {}, err => {
-    expect(err.response.status).toBe(404);
-    server.close();
-  });
+  return instance.get('/whatever').then(
+    res => {},
+    err => {
+      expect(err.response.status).toBe(404);
+      server.close();
+    }
+  );
 });
 
 test('it will code -1 when request "/$mock-check" with error id', () => {
@@ -99,6 +102,35 @@ test('it will code 0 when request "/$mock-check" with correct params', () => {
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('0');
     expect(getStatus().mockChecked['api.mock.com']).toBe(1);
+    getStatus.mockReset();
+    server.close();
+  });
+});
+
+test('it will code -1 when request "/$set-check" with error params', () => {
+  const { instance, server } = setupEnv(8896);
+
+  return instance.get('/$set-check?id=').then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data.code).toBe('-1');
+    server.close();
+  });
+});
+
+test('it will code 0 when request "/$set-check" with correct params', () => {
+  const { instance, server } = setupEnv(8897);
+
+  getStatus.mockImplementation(() => {
+    return require.requireActual('../lib/server/status').getStatus();
+  });
+  setStatus.mockImplementationOnce((key, val) => {
+    return require.requireActual('../lib/server/status').setStatus(key, val);
+  });
+  const setId = 'a set of api';
+  return instance.get(`/$set-check?id=${setId}`).then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data.code).toBe('0');
+    expect(getStatus().setChecked).toBe(setId);
     getStatus.mockReset();
     server.close();
   });
