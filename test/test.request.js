@@ -217,3 +217,29 @@ test('it will match the mock set', () => {
     server.close();
   });
 });
+
+test('mock with data', () => {
+  const data = { code: 1 };
+  getStatus.mockImplementationOnce(() => {
+    return {
+      mock: {
+        'api.mock.com': [
+          {
+            data: () => ({ data }),
+            ...defaultConfig
+          }
+        ],
+        _set: {}
+      },
+      mockChecked: { 'api.mock.com': 0 },
+      setChecked: null
+    };
+  });
+  const { instance, server } = setEnv(8087);
+
+  return instance.get('').then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual(data);
+    server.close();
+  });
+});

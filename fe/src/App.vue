@@ -5,8 +5,9 @@
       <el-aside class="app-menu">
         <el-row>
           <el-col :span="24">
-            <el-menu class="menu" :router="true">
+            <el-menu class="menu" :router="true" :default-active="$route.path">
               <el-menu-item index="/mocks">Mock Data</el-menu-item>
+              <el-menu-item index="/sets">Mock Set</el-menu-item>
             </el-menu>
           </el-col>
         </el-row>
@@ -21,7 +22,24 @@
 <script>
 export default {
   name: 'app',
-  components: {}
+  components: {},
+  mounted() {
+    this.reqestMock();
+  },
+  methods: {
+    async reqestMock() {
+      const { $req, $awaitTo } = this;
+
+      const req = $req({ url: '/$mock' });
+      const { data } = await $awaitTo(req);
+
+      this.$store.commit('updateMock', data);
+
+      this.$requestId = setTimeout(() => {
+        this.reqestMock();
+      }, 1000);
+    }
+  }
 };
 </script>
 

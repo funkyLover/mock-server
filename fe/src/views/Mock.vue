@@ -1,5 +1,5 @@
 <template>
-  <div class="mocks">
+  <div class="page-mock">
     <el-collapse accordion>
       <el-collapse-item v-for="(val, key) in mocks" :key="key">
         <template slot="title">
@@ -18,41 +18,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'Page-Mock',
-  beforeRouteLeave(to, from, next) {
-    this.$requestId && clearTimeout(this.$requestId);
-    return next();
-  },
   data() {
-    return {
-      mocks: {},
-      proxy: {},
-      mockChecked: {}
-    };
+    return {};
   },
-  mounted() {
-    this.reqestMock();
+  computed: {
+    ...mapState(['mocks', 'mockChecked'])
   },
   methods: {
-    async reqestMock() {
-      const { $req, $awaitTo } = this;
-
-      const req = $req({ url: '/$mock' });
-      const { data } = await $awaitTo(req);
-
-      console.log(data);
-      const mocks = data.mock;
-      const mockChecked = data.mockChecked;
-
-      this.mocks = this._.omit(mocks, ['_proxy']);
-      this.mockChecked = mockChecked;
-      this.proxy = mocks._proxy;
-
-      this.$requestId = setTimeout(() => {
-        this.reqestMock();
-      }, 1000);
-    },
     async reqestMockCheck(id, index) {
       const { $req, $awaitTo } = this;
 
@@ -63,30 +39,23 @@ export default {
 
       await $awaitTo(req);
     },
-    bindCheckItem(key, i) {
+    bindCheckItem(key, index) {
       switch (this.mockChecked[key]) {
         case undefined:
-          this.$set(this.mockChecked, key, i);
           break;
-        case i:
-          this.mockChecked[key] = -1;
-          break;
-        case 0:
-          this.mockChecked[key] = i;
-          break;
-        default:
-          this.mockChecked[key] = i;
+        case index:
+          index = -1;
           break;
       }
-
-      this.reqestMockCheck(key, i);
+      this.$store.commit('mockChecked', { key, index });
+      this.reqestMockCheck(key, index);
     }
   }
 };
 </script>
 
 <style lang="scss">
-.mocks {
+.page-mock {
   .el-collapse-item__header {
     font-size: 18px;
     padding-left: 10px;
