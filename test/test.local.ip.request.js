@@ -81,7 +81,14 @@ test('it will code -1 when request "/$mock-check" with error id', () => {
 test('it will code -1 when request "/$mock-check" with error index', () => {
   const { instance, server } = setupEnv(8894);
 
-  return instance.get('/$mock-check?id=api.mock.com&index=-1').then(res => {
+  getStatus.mockImplementation(() => {
+    return require.requireActual('../lib/server/status').getStatus();
+  });
+  setStatus.mockImplementationOnce((key, val) => {
+    return require.requireActual('../lib/server/status').setStatus(key, val);
+  });
+
+  return instance.get('/$mock-check?id=api.mock.com&index=').then(res => {
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('-1');
     server.close();
