@@ -55,13 +55,13 @@ http://192.168.0.1:8888/view # local ip
 
 And then visit `http://127.0.0.1:${port}/view` in browser.
 
-### Project Settings
+## Project Settings
 
-After starting the mock server, we need to proxy the project request to our mock server.
+After starting the mock server, we need to proxy the project's request to our mock server.
 
 Suppose our mock server is `http://127.0.0.1:8888`, and the mock api is `api.mock.com/api-bin/*`.
 
-#### react(create-react-app)
+### react(create-react-app)
 
 See [create-react-app#docs](https://facebook.github.io/create-react-app/docs/proxying-api-requests-in-development#configuring-the-proxy-manually) for details
 
@@ -80,7 +80,7 @@ module.exports = function(app) {
 };
 ```
 
-#### vue-cli 3.x
+### vue-cli 3.x
 
 ```js
 // vue.config.js
@@ -101,7 +101,7 @@ devServer: {
 // ...
 ```
 
-#### vue webpack template (vue-cli 2.x)
+### vue webpack template (vue-cli 2.x)
 
 ```js
 // config/index.js
@@ -117,13 +117,13 @@ proxyTable: {
 //...
 ```
 
-#### webpack
+### webpack
 
 The proxy function of [webpack.devServer](https://webpack.js.org/configuration/dev-server/) is [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware).
 
 Its configuration are no different from the above three, because the above three are also using [webpack.devServer](https://webpack.js.org/configuration/dev-server/).
 
-#### Proxy Tools
+### Proxy Tools
 
 If your project does not base on webpack's functionality (or other module bundler tools), and not using [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware) too.
 
@@ -135,7 +135,7 @@ api.mock.com 127.0.0.1:8080 # Local server for server front-end resource during 
 # api.mock.com /path/to/your/fe/project/index.html # Or use local files
 ```
 
-### Mock api
+## Mock api
 
 If you want the mock api with full url to be `api.mock.com/api-bin/api1`, the directory structure should as follows (the full configuration can be found in [docs/mock](https://github.com/funkyLover/mock-server/tree/dev/docs/mock))
 
@@ -150,7 +150,7 @@ ${mock dir}
           |- data.js
 ```
 
-### Status switching
+## Status switching
 
 An mocked api can store multiple state data returns. You can select the check box with the status want to be responded. (`http://127.0.0.1:${port}/view/mocks`).
 
@@ -174,9 +174,9 @@ Then request to `api.mock.com/api-bin/api1` through proxy.
 
 ![response with option1](./docs/img/2.png)
 
-### More configuration
+## More configuration
 
-#### Respone html
+### Respond html
 
 ```js
 // ${mock dir}/path/represent/your/api/return html/data.js
@@ -194,7 +194,7 @@ module.exports = `
 ![check select return html](./docs/img/3.png)
 ![response with option1 - return html](./docs/img/4.png)
 
-#### Time-consuming api
+### Time-consuming api
 
 If you want to simulate an api that takes long time, you can specify it with `http.js`.
 
@@ -214,7 +214,7 @@ module.exports = {
 ![response after 2s](./docs/img/5.png)
 ![status of response](./docs/img/6.png)
 
-#### Http status code
+### Http status code
 
 If you need to simulate the status code of api other than 200, you can also specify it in `http.js`.
 
@@ -231,7 +231,7 @@ module.exports = {
 ![response Not Found](./docs/img/7.png)
 ![response status code 404](./docs/img/8.png)
 
-#### http.js
+### http.js
 
 The configuration and default values ​​supported by `http.js` are as follows.
 
@@ -248,7 +248,7 @@ module.exports = {
 }
 ```
 
-#### Javascript functionality
+### Javascript functionality
 
 `data.js` can export a function, which will be passed a [ctx] param (https://koajs.com/#context) and need to return an object that contains data.
 
@@ -289,7 +289,7 @@ const xxx = require('xxx'); // npm模块
 module.exports = {};
 ```
 
-### Forward to online api
+## Forward to online api
 
 Sometimes with project iterations, some of the apis on the online/test server are available.
 
@@ -306,7 +306,7 @@ module.exports = {
 
 The request to `api.mock.com/api-bin/api1` or `api.mock.com/api-bin/api2`, will eventually request a server with ip `192.168.0.xxx`.
 
-### Set switching
+## Set switching
 
 Different business logic/exceptional processes may involve more than one api.
 

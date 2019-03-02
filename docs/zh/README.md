@@ -53,13 +53,13 @@ http://192.168.0.1:8888/view # local ip
 
 然后使用浏览器访问前端页面(`http://127.0.0.1:${port}/view`)
 
-### 项目设置
+## 项目设置
 
 启动mock服务器后, 我们需要把项目的请求都代理到我们mock服务器上去
 
 假设我们的服务器为`http://127.0.0.1:8888`, mock的api为`api.mock.com/api-bin/*`
 
-#### react(create-react-app)
+### react(create-react-app)
 
 详情可看[create-react-app#docs](https://facebook.github.io/create-react-app/docs/proxying-api-requests-in-development#configuring-the-proxy-manually)
 
@@ -78,7 +78,7 @@ module.exports = function(app) {
 };
 ```
 
-#### vue-cli 3.x
+### vue-cli 3.x
 
 ```js
 // vue.config.js
@@ -99,7 +99,7 @@ devServer: {
 // ...
 ```
 
-#### vue webpack模板(vue-cli 2.x)
+### vue webpack模板(vue-cli 2.x)
 
 ```js
 // config/index.js
@@ -115,13 +115,13 @@ proxyTable: {
 //...
 ```
 
-#### webpack
+### webpack
 
 [webpack.devServer](https://webpack.js.org/configuration/dev-server/)的代理功能使用的是[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)
 
 其配置项和上面三者没有区别, 因为上面三者使用的也是[webpack.devServer](https://webpack.js.org/configuration/dev-server/)
 
-#### 代理工具
+### 代理工具
 
 如果你的项目不依赖webpack(或其他类似打包工具), 也没有办法使用[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)进行代理
 
@@ -133,7 +133,7 @@ api.mock.com 127.0.0.1:8080 # 开发时用于server前端资源启动的本地�
 # api.mock.com /path/to/your/fe/project/index.html # 或者直接使用本地文件
 ```
 
-### mock api
+## mock api
 
 如果你想mock的api完整url为`api.mock.com/api-bin/api1`, 目录结构应该如下所示(文档中出现的完整配置, 可见[docs/mock](https://github.com/funkyLover/mock-server/tree/dev/docs/mock))
 
@@ -148,7 +148,7 @@ ${mock dir}
           |- data.js
 ```
 
-### 多态切换
+## 多状态切换
 
 你可以在一个api下存放多个状态的数据返回, 通过在前端页面(`http://127.0.0.1:${port}/view/mocks`), 勾选中希望返回的状态
 
@@ -172,9 +172,9 @@ module.exports = {
 
 ![response with option1](../img/2.png)
 
-### 更多配置
+## 更多配置
 
-#### 返回html
+### 返回html
 
 ```js
 // ${mock dir}/path/represent/your/api/return html/data.js
@@ -192,7 +192,7 @@ module.exports = `
 ![check select return html](../img/3.png)
 ![response with option1 - return html](../img/4.png)
 
-#### 耗时api
+### 耗时api
 
 如果要模拟耗时过长的api, 可通过`http.js`进行指定
 
@@ -212,7 +212,7 @@ module.exports = {
 ![response after 2s](../img/5.png)
 ![status of response](../img/6.png)
 
-#### http请求状态码
+### http请求状态码
 
 如果需要模拟api除200以外的状态码, 同样可以通过`http.js`中指定
 
@@ -229,7 +229,7 @@ module.exports = {
 ![response Not Found](../img/7.png)
 ![response status code 404](../img/8.png)
 
-#### http.js更多配置
+### http.js更多配置
 
 `http.js`支持的配置项和默认值如下, 可根据需求自行调整
 
@@ -246,7 +246,7 @@ module.exports = {
 }
 ```
 
-#### js逻辑
+### js逻辑
 
 `data.js`可export一个函数, 传入参数[ctx](https://koajs.com/#context), 需要返回一个带data字段数据的对象
 
@@ -286,7 +286,7 @@ const xxx = require('xxx'); // npm模块
 module.exports = {};
 ```
 
-### 代理线上数据
+## 代理线上数据
 
 有时候在项目迭代中, 线上/测试环境服务器上的部分api是可用的
 
@@ -303,7 +303,7 @@ module.exports = {
 
 这个时候你请求 `api.mock.com/api-bin/api1` 或 `api.mock.com/api-bin/api2`, 都会最终请求到ip为`192.168.0.xxx`的服务器.
 
-### 批量切换
+## 批量切换
 
 不同的业务逻辑/异常流程, 可能都不仅仅只牵扯到1个接口
 
