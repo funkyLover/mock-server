@@ -359,8 +359,7 @@ If fails again, it will check `_proxy.js` and forward it to the target server.
 
 If the proxy ip is not configured, it will return 404 directly.
 
-
-## Best practices
+## Recommend
 
 Recommend to install mock-server as a devDependency within project.
 
