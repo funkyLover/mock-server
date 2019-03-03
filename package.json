@@ -1,5 +1,5 @@
 {
-  "name": "mock-server",
+  "name": "mock-server-local",
   "version": "1.0.0",
   "description": "Mock your apis with a node server",
   "main": "index.js",
@@ -29,8 +29,8 @@
     "mock api",
     "mock server"
   ],
-  "engines" : {
-    "node" : ">=8"
+  "engines": {
+    "node": ">=8"
   },
   "author": "ahui-lin@qq.com",
   "dependencies": {

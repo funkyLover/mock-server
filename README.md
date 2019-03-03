@@ -6,18 +6,18 @@ A widget for mocking back-end api when development, it will generate a mock api 
 
 ## Installation
 
-mock-server requires node v8.x.x or higher.
+mock-server-local requires node v8.x.x or higher.
 
 Global install
 
 ```bash
-npm install -g mock-server
+npm install -g mock-server-local
 ```
 
 Local install within project
 
 ```bash
-npm install mock-server --save-dev
+npm install mock-server-local --save-dev
 ```
 
 ## Usage
@@ -137,7 +137,7 @@ api.mock.com 127.0.0.1:8080 # Local server for server front-end resource during 
 
 ## Mock api
 
-If you want the mock api with full url to be `api.mock.com/api-bin/api1`, the directory structure should as follows (the full configuration can be found in [docs/mock](https://github.com/funkyLover/mock-server/tree/dev/docs/mock))
+If you want the mock api with full url to be `api.mock.com/api-bin/api1`, the directory structure should as follows (the full configuration can be found in [docs/mock](./docs/mock))
 
 ```
 ${mock dir}
@@ -361,12 +361,12 @@ If the proxy ip is not configured, it will return 404 directly.
 
 ## Recommend
 
-Recommend to install mock-server as a devDependency within project.
+Recommend to install mock-server-local as a devDependency within project.
 
 ```bash
 cd xxx_project
 
-npm install mock-server --save-dev
+npm install mock-server-local --save-dev
 ```
 
 Create a mock directory in the project directory to place the mock api configuration.

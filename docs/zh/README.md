@@ -4,18 +4,18 @@
 
 ## 安装
 
-mock-server运行环境需node v8.x及以上版本支持
+mock-server-local运行环境需node v8.x及以上版本支持
 
 全局安装
 
 ```bash
-npm install -g mock-server
+npm install -g mock-server-local
 ```
 
 或作为项目开发依赖安装
 
 ```bash
-npm install mock-server --save-dev
+npm install mock-server-local --save-dev
 ```
 
 ## 使用
@@ -135,7 +135,7 @@ api.mock.com 127.0.0.1:8080 # 开发时用于server前端资源启动的本地�
 
 ## mock api
 
-如果你想mock的api完整url为`api.mock.com/api-bin/api1`, 目录结构应该如下所示(文档中出现的完整配置, 可见[docs/mock](https://github.com/funkyLover/mock-server/tree/dev/docs/mock))
+如果你想mock的api完整url为`api.mock.com/api-bin/api1`, 目录结构应该如下所示(文档中出现的完整配置, 可见[docs/mock](../mock))
 
 ```
 ${mock dir}
@@ -358,12 +358,12 @@ module.exports = data;
 
 ## 推荐用法
 
-建议将mock-server作为开发依赖安装到具体项目中去
+建议将mock-server-local作为开发依赖安装到具体项目中去
 
 ```bash
 cd xxx_project
 
-npm install mock-server --save-dev
+npm install mock-server-local --save-dev
 ```
 
 在项目目录下新建mock目录用于存放mock api配置
