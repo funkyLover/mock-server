@@ -409,3 +409,11 @@ cd fe && npm install
 
 npm run dev # cwd: /path/to/mock-server
 ```
+
+## Roadmap
+
+- ws support
+- run as daemon process
+- state keeping
+- request record
+- ...
