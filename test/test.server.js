@@ -1,6 +1,7 @@
 const chokidar = require('chokidar');
 const Koa = require('koa');
 const mock = require('../lib/getMock');
+const path = require('path');
 const { startMock } = require('../lib/server/index');
 const { getStatus } = require('../lib/server/status');
 jest.mock('chokidar');
@@ -65,6 +66,7 @@ test('mock server will be started when koa success setup a server', async () => 
   const res = startMock('.', '8080');
   expect(res).toBe(true);
   expect(getStatus().server).toEqual({ port: '8080' });
+  expect(getStatus().dir).toEqual(path.resolve(process.cwd(), '.'));
 });
 
 test('mock server will not be started when error', async () => {
@@ -85,4 +87,5 @@ test('mock server will not be started when error', async () => {
   expect(getStatus().server).toBe(null);
   expect(getStatus().mock).toEqual({});
   expect(getStatus().setChecked).toEqual(null);
+  expect(getStatus().dir).toEqual('');
 });

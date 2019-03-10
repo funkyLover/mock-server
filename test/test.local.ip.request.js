@@ -1,3 +1,5 @@
+const path = require('path');
+const fs = require('fs-extra');
 const Koa = require('koa');
 const axios = require('axios');
 const { getStatus, setStatus } = require('../lib/server/status');
@@ -140,5 +142,28 @@ test('it will code 0 when request "/$set-check" with correct params', () => {
     expect(getStatus().setChecked).toBe(setId);
     getStatus.mockReset();
     server.close();
+  });
+});
+
+test('it will create default mock template when request "/$create"', () => {
+  const { instance, server } = setupEnv(8897);
+  const dir = path.resolve(__dirname, './__test.create__');
+  const apiPath = path.join(dir, 'api.mock.com');
+  const proxyPath = path.join(dir, '_proxy.js');
+  const setPath = path.join(dir, '_set');
+  getStatus.mockImplementation(() => ({ dir }));
+
+  return instance.get('/$create').then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data.code).toBe('0');
+
+    expect(fs.existsSync(apiPath)).toBe(true);
+    expect(fs.existsSync(proxyPath)).toBe(true);
+    expect(fs.existsSync(setPath)).toBe(true);
+
+    server.close();
+    fs.removeSync(apiPath);
+    fs.removeSync(setPath);
+    fs.removeSync(proxyPath);
   });
 });

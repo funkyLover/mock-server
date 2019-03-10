@@ -37,6 +37,7 @@
     "axios": "^0.18.0",
     "chokidar": "^2.1.0",
     "commander": "^2.19.0",
+    "fs-extra": "^7.0.1",
     "http-proxy-middleware": "^0.19.1",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
