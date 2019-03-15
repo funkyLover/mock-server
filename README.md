@@ -296,7 +296,7 @@ Sometimes with project iterations, some of the apis on the online/test server ar
 You may only need to mock some new apis. When the request do not match your mock configuration, it will be forwarded to target server.
 
 ```js
-// ${mock dir}/_proxy.js
+// ${mock dir}/proxy.js
 module.exports = {
   'api.mock.com': 'https://192.168.0.xxx' // the server ip that the request will be forwarded to. Note that the protocol https/http cannot be omitted.
 };
@@ -355,7 +355,7 @@ the request will preferentially match the api in the mock set.
 
 Respond if it matches, or it will try to match again in mock api(in `http://127.0.0.1:${port}/view/mocks`) when fail in set match.
 
-If fails again, it will check `_proxy.js` and forward it to the target server.
+If fails again, it will check `proxy.js` and forward it to the target server.
 
 If the proxy ip is not configured, it will return 404 directly.
 

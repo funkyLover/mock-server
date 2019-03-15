@@ -293,7 +293,7 @@ module.exports = {};
 这时可能只需要mock新增的api, 而没有勾选返回的mock api或mock数据没有定义的api, 则直接请求到目标服务器
 
 ```js
-// ${mock dir}/_proxy.js
+// ${mock dir}/proxy.js
 module.exports = {
   'api.mock.com': 'https://192.168.0.xxx' // ip为请求最终指向的服务器ip, 注意协议https/http不可省略
 };
@@ -352,7 +352,7 @@ module.exports = data;
 
 如匹配到了则返回, 如匹配失败就会在mock api中再次匹配
 
-如果mock api中也匹配失败, 则会检查`_proxy.js`并转发到线上
+如果mock api中也匹配失败, 则会检查`proxy.js`并转发到线上
 
 如并没有配置线上ip, 则会直接返回404
 

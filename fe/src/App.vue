@@ -6,8 +6,9 @@
         <el-row>
           <el-col :span="24">
             <el-menu class="menu" :router="true" :default-active="$route.path">
-              <el-menu-item index="/mocks">Mock Data</el-menu-item>
-              <el-menu-item index="/sets">Mock Set</el-menu-item>
+              <el-menu-item index="/mocks">Mock data</el-menu-item>
+              <el-menu-item index="/sets">Mock set</el-menu-item>
+              <el-menu-item index="/proxy">Proxy config</el-menu-item>
             </el-menu>
           </el-col>
         </el-row>

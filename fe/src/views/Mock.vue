@@ -1,6 +1,6 @@
 <template>
   <div class="page-mock">
-    <el-collapse accordion>
+    <el-collapse accordion v-if="!isEmpty">
       <el-collapse-item v-for="(val, key) in mocks" :key="key">
         <template slot="title">
           {{ key }}
@@ -14,6 +14,12 @@
         </div>
       </el-collapse-item>
     </el-collapse>
+    <div v-if="isEmpty" class="tips">
+      No data yet, want
+      <el-button type="text" @click="bindGenerate"
+        >generate with template</el-button
+      >?
+    </div>
   </div>
 </template>
 
@@ -26,9 +32,21 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(['mocks', 'mockChecked'])
+    ...mapState(['mocks', 'mockChecked']),
+    isEmpty() {
+      return _.isEmpty(this.mocks);
+    }
   },
   methods: {
+    async bindGenerate() {
+      const { $req, $awaitTo } = this;
+
+      const req = $req({
+        url: '/$create'
+      });
+
+      await $awaitTo(req);
+    },
     async reqestMockCheck(id, index) {
       const { $req, $awaitTo } = this;
 
@@ -66,6 +84,17 @@ export default {
 
     .el-checkbox__label {
       font-size: 16px;
+    }
+  }
+
+  .tips {
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $white;
+    .el-button {
+      font-size: 20px;
+      font-weight: 400;
     }
   }
 }
