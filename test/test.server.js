@@ -92,3 +92,15 @@ test('mock server will not be started when error', async () => {
   expect(getStatus().setChecked).toEqual(null);
   expect(getStatus().dir).toEqual('');
 });
+
+test('get checked data from _checked.js', async () => {
+  chokidar.watch.mockImplementation(chokidarWatchMockFn);
+  Koa.mockReset();
+  Koa.mockImplementationOnce(KoaMockFn);
+
+  startMock('./example/with checked data', '8080');
+  expect(getStatus().mockChecked).toEqual({
+    'api.mock.com/api-bin/api.fcgi': 1
+  });
+  expect(getStatus().setChecked).toBe(1);
+});
