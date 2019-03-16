@@ -98,6 +98,7 @@ export default {
 .page-set {
   .sets .el-collapse-item__header {
     font-size: 18px;
+    line-height: 1.2;
     margin-left: 40px;
     position: relative;
   }

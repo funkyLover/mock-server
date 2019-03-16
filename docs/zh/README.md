@@ -411,7 +411,5 @@ npm run dev # cwd: /path/to/mock-server
 
 - socket支持
 - 以后台进程运行
-- 状态记录
 - 请求记录与展示
 - ...
-

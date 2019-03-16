@@ -80,6 +80,7 @@ export default {
 .page-mock {
   .el-collapse-item__header {
     font-size: 18px;
+    line-height: 1.2;
     padding-left: 10px;
   }
 

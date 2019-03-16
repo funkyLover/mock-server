@@ -414,6 +414,5 @@ npm run dev # cwd: /path/to/mock-server
 
 - ws support
 - run as daemon process
-- state keeping
 - request record
 - ...
