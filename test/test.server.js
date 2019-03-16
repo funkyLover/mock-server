@@ -21,25 +21,28 @@ let KoaMockFn = () => {
 };
 
 let chokidarWatchMockFn = () => {
-  return {
-    on: () => {},
+  const watch = {
+    on: () => watch,
     close: () => {}
   };
+  return watch;
 };
 
 test('mock will update when mock file change', async () => {
   mock.getMock.mockReturnValueOnce(1);
-  mock.getMock.mockReturnValueOnce(2);
+  mock.getMock.mockReturnValue(2);
   Koa.mockImplementationOnce(KoaMockFn);
 
-  chokidar.watch.mockImplementationOnce(() => {
-    return {
+  chokidar.watch.mockImplementation(() => {
+    const watch = {
       on: (type, cb) => {
         setTimeout(() => {
           cb('.');
         }, 200);
+        return watch;
       }
     };
+    return watch;
   });
 
   startMock('.', '8080');
@@ -53,7 +56,7 @@ test('mock will update when mock file change', async () => {
 });
 
 test('mock server will be started when koa success setup a server', async () => {
-  chokidar.watch.mockImplementationOnce(chokidarWatchMockFn);
+  chokidar.watch.mockImplementation(chokidarWatchMockFn);
   Koa.mockImplementationOnce(() => {
     return {
       listen: port => {
@@ -70,7 +73,7 @@ test('mock server will be started when koa success setup a server', async () => 
 });
 
 test('mock server will not be started when error', async () => {
-  chokidar.watch.mockImplementationOnce(chokidarWatchMockFn);
+  chokidar.watch.mockImplementation(chokidarWatchMockFn);
   Koa.mockReset();
   Koa.mockImplementationOnce(() => {
     return {

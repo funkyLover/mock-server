@@ -16,7 +16,7 @@ export default new Vuex.Store({
     updateMock(state, mockData) {
       state.mocks = _.omit(mockData.mock, ['_set', '_proxy']);
       state.sets = mockData.mock._set;
-      state.proxy = mockData.mock._set;
+      state.proxy = mockData.mock._proxy;
       state.mockChecked = mockData.mockChecked;
       state.setChecked = mockData.setChecked;
     },

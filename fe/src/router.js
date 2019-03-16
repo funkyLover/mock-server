@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Mock from './views/Mock.vue';
 import MockSet from './views/Set.vue';
+import ProxyConfig from './views/proxy.vue';
 
 Vue.use(Router);
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/sets',
       name: 'sets',
       component: MockSet
+    },
+    {
+      path: '/proxys',
+      name: 'proxys',
+      component: ProxyConfig
     }
   ]
 });

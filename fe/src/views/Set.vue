@@ -1,6 +1,6 @@
 <template>
   <div class="page-set">
-    <el-collapse accordion>
+    <el-collapse accordion v-if="!isEmpty">
       <el-collapse-item class="sets" v-for="(val, key) in sets" :key="key">
         <template slot="title">
           <el-checkbox
@@ -25,6 +25,12 @@
         </div>
       </el-collapse-item>
     </el-collapse>
+    <div v-if="isEmpty" class="tips">
+      No set data yet, want
+      <el-button type="text" @click="bindGenerate"
+        >generate with template</el-button
+      >?
+    </div>
   </div>
 </template>
 
@@ -37,9 +43,29 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(['sets', 'setChecked'])
+    ...mapState(['sets', 'setChecked']),
+    isEmpty() {
+      return _.isEmpty(this.sets);
+    }
   },
   methods: {
+    async bindGenerate() {
+      const { $req, $awaitTo } = this;
+
+      const req = $req({
+        url: '/$create',
+        data: {
+          type: 'set'
+        },
+        loading: true
+      });
+
+      const { err } = await $awaitTo(req);
+      if (err) {
+        return;
+      }
+      this.$message.success('success');
+    },
     async reqestSetCheck(id) {
       const { $req, $awaitTo } = this;
 
@@ -109,6 +135,17 @@ export default {
         width: 90px;
         display: inline-block;
       }
+    }
+  }
+
+  .tips {
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $white;
+    .el-button {
+      font-size: 20px;
+      font-weight: 400;
     }
   }
 }

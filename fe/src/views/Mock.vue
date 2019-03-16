@@ -45,7 +45,11 @@ export default {
         url: '/$create'
       });
 
-      await $awaitTo(req);
+      const { err } = await $awaitTo(req);
+      if (err) {
+        return;
+      }
+      this.$message.success('success');
     },
     async reqestMockCheck(id, index) {
       const { $req, $awaitTo } = this;

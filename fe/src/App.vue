@@ -1,6 +1,18 @@
 <template>
   <el-container class="app">
-    <el-header class="app-header"><p>Mock Server</p></el-header>
+    <el-header class="app-header">
+      <p>Mock Server</p>
+      <div class="links">
+        <a href="https://github.com/funkyLover/mock-server" target="_blank"
+          >GitHub</a
+        >
+        <a
+          href="https://github.com/funkyLover/mock-server/blob/master/README.md"
+          target="_blank"
+          >Docs</a
+        >
+      </div>
+    </el-header>
     <el-container>
       <el-aside class="app-menu">
         <el-row>
@@ -8,7 +20,7 @@
             <el-menu class="menu" :router="true" :default-active="$route.path">
               <el-menu-item index="/mocks">Mock data</el-menu-item>
               <el-menu-item index="/sets">Mock set</el-menu-item>
-              <el-menu-item index="/proxy">Proxy config</el-menu-item>
+              <el-menu-item index="/proxys">Proxy config</el-menu-item>
             </el-menu>
           </el-col>
         </el-row>
@@ -57,6 +69,24 @@ export default {
   display: flex;
   p {
     margin: 0;
+  }
+
+  .links {
+    margin-left: 20px;
+    flex: 1;
+    text-align: right;
+
+    a {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 400;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
   }
 }
 
