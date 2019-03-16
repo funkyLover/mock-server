@@ -9,6 +9,15 @@ const send = require('koa-send');
 jest.mock('../lib/server/status');
 jest.mock('koa-send');
 
+const TEST_DIR = path.resolve(__dirname, './__test.create__');
+
+afterAll(() => {
+  fs.removeSync(path.resolve(TEST_DIR, '_checked.js'));
+  fs.removeSync(path.resolve(TEST_DIR, 'api.mock.com'));
+  fs.removeSync(path.resolve(TEST_DIR, 'proxy.js'));
+  fs.removeSync(path.resolve(TEST_DIR, '_set'));
+});
+
 function setupEnv(port) {
   const instance = axios.create({
     baseURL: `http://127.0.0.1:${port}`,
@@ -103,14 +112,16 @@ test('it will code 0 when request "/$mock-check" with correct params', () => {
   getStatus.mockImplementation(() => {
     return require.requireActual('../lib/server/status').getStatus();
   });
-  setStatus.mockImplementationOnce((key, val) => {
+  setStatus.mockImplementation((key, val) => {
     return require.requireActual('../lib/server/status').setStatus(key, val);
   });
+  setStatus('dir', TEST_DIR);
 
   return instance.get('/$mock-check?id=api.mock.com&index=1').then(res => {
+    const status = getStatus();
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('0');
-    expect(getStatus().mockChecked['api.mock.com']).toBe(1);
+    expect(status.mockChecked['api.mock.com']).toBe(1);
     getStatus.mockReset();
     server.close();
   });
@@ -126,75 +137,77 @@ test('it will code -1 when request "/$set-check" with error params', () => {
   });
 });
 
-test('it will code 0 when request "/$set-check" with correct params', () => {
+test('it will return code 0 when request "/$set-check" with correct params', () => {
   const { instance, server } = setupEnv(8897);
 
   getStatus.mockImplementation(() => {
-    return require.requireActual('../lib/server/status').getStatus();
+    return {
+      ...require.requireActual('../lib/server/status').getStatus(),
+      dir: TEST_DIR
+    };
   });
-  setStatus.mockImplementationOnce((key, val) => {
+  setStatus.mockImplementation((key, val) => {
     return require.requireActual('../lib/server/status').setStatus(key, val);
   });
+  setStatus('dir', TEST_DIR);
   const setId = 'a set of api';
-  return instance.get(`/$set-check?id=${setId}`).then(res => {
+
+  return instance.get(`/$set-check?id=${setId}`).then(async res => {
+    const status = getStatus();
+    const dir = status.dir;
+    const checkFile = path.resolve(dir, '_checked.js');
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('0');
-    expect(getStatus().setChecked).toBe(setId);
+    expect(status.setChecked).toBe(setId);
+    expect(fs.existsSync(checkFile)).toBe(true);
     getStatus.mockReset();
     server.close();
   });
 });
 
 test('it will create default mock template when request "/$create"', () => {
-  const { instance, server } = setupEnv(8897);
-  const dir = path.resolve(__dirname, './__test.create__');
-  const apiPath = path.join(dir, 'api.mock.com');
-  getStatus.mockImplementation(() => ({ dir, mock: {} }));
+  const { instance, server } = setupEnv(8898);
+  const apiPath = path.join(TEST_DIR, 'api.mock.com');
+  getStatus.mockImplementation(() => ({ dir: TEST_DIR, mock: {} }));
 
   return instance.get('/$create').then(res => {
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('0');
     expect(fs.existsSync(apiPath)).toBe(true);
     server.close();
-    fs.removeSync(apiPath);
   });
 });
 
 test('it will create default mock template when request "/$create" with type proxy', () => {
-  const { instance, server } = setupEnv(8898);
-  const dir = path.resolve(__dirname, './__test.create__');
-  const proxyPath = path.join(dir, 'proxy.js');
-  getStatus.mockImplementation(() => ({ dir, mock: {} }));
+  const { instance, server } = setupEnv(8899);
+  const proxyPath = path.join(TEST_DIR, 'proxy.js');
+  getStatus.mockImplementation(() => ({ dir: TEST_DIR, mock: {} }));
 
   return instance.get('/$create?type=proxy').then(res => {
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('0');
     expect(fs.existsSync(proxyPath)).toBe(true);
     server.close();
-    fs.removeSync(proxyPath);
   });
 });
 
 test('it will create default mock template when request "/$create" with type set', () => {
-  const { instance, server } = setupEnv(8899);
-  const dir = path.resolve(__dirname, './__test.create__');
-  const setPath = path.join(dir, '_set');
-  getStatus.mockImplementation(() => ({ dir, mock: {} }));
+  const { instance, server } = setupEnv(8900);
+  const setPath = path.join(TEST_DIR, '_set');
+  getStatus.mockImplementation(() => ({ dir: TEST_DIR, mock: {} }));
 
   return instance.get('/$create?type=set').then(res => {
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('0');
     expect(fs.existsSync(setPath)).toBe(true);
     server.close();
-    fs.removeSync(setPath);
   });
 });
 
 test('it will return error when mock data is exist', () => {
-  const { instance, server } = setupEnv(8900);
-  const dir = path.resolve(__dirname, './__test.create__');
+  const { instance, server } = setupEnv(8901);
   getStatus.mockImplementation(() => ({
-    dir,
+    dir: TEST_DIR,
     mock: { _set: { notEmpty: true } }
   }));
 
