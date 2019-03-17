@@ -2,6 +2,11 @@
 
 [中文文档](./docs/zh/README.md)
 
+[![build](https://travis-ci.com/funkyLover/mock-server.svg?branch=master)](https://travis-ci.com/funkyLover/mock-server)
+[![npm](https://img.shields.io/npm/v/mock-server-local.svg)](https://www.npmjs.com/package/mock-server-local)
+![node version](https://img.shields.io/node/v/mock-server-local.svg)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+
 A widget for mocking back-end api when development, it will generate a mock api configuration by local file, and start a node server. Then just forward the front-end request to that server.
 
 ## Installation

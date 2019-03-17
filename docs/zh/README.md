@@ -1,5 +1,10 @@
 # Mock Server
 
+[![build](https://travis-ci.com/funkyLover/mock-server.svg?branch=master)](https://travis-ci.com/funkyLover/mock-server)
+[![npm](https://img.shields.io/npm/v/mock-server-local.svg)](https://www.npmjs.com/package/mock-server-local)
+![node version](https://img.shields.io/node/v/mock-server-local.svg)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+
 一个用于解决前后端分离并行开发时前端依赖接口数据问题的小工具, 通过读取本地文件生成mock api配置并启动node服务器. 然后只需把前端请求转发到该服务器即可
 
 ## 安装

@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- '8'
+install: npm install && npm run install:fe
+script: npm run lint && npm test
+before_deploy: npm run build:fe
+deploy:
+  provider: npm
+  email: ahui-lin@qq.com
+  skip_cleanup: true
+  api_key:
+    secure: VP56yeuBL4jetdV8q14kFRpCQES4cqbTq4ySLHohTZy/4JSZGB9X4BA/j3GAAVuOE0WzEI5scs6octyuM3d1K3/bekthjgL8KxtWBu8qTilfE1jF6lpOPLKtLJkjcQcNEHncNBO/Z1h4H6rTRWtOT+FRT3H9D0PVtXk07o2a7A/LOcj2aBgGxFIy1ZR160Frl2Rl7VCcd95TZHy3qaZCUp9ahif6CQZV2tF1TnnxRtomQxHv+aiFdJBY13WtTLzDyhV3qoGqrfJrRPNg0T26ZVnvb8F8M2xuyzwWLj4L4xFvLMsYGjLIxrsJM5zXtHRxCFmrtDmbu33UUjMUZwCR8Vq8BKQ+T+h8xn2PWWzmEMf6D7/2E5+8h5HJIH0GmaFajrd/Fy/mk/y4w09lm9guS0Qhr7z7h06csnJET0nIX0Z0LmxYLJ0gMLUzVjHSR0K657cKvNsIb4P4yx/e/yC0RM9FZoDuqhJBLXbaW9Zo8bzzcc7LUJgJnpeRrTxaUT2C5+lap1XHwZ7+b6msv8ea/52VKXuCdWkdblhqNOU5PIPaa4WlEUkLOjMyvQ1AhZiKeXsLHckm27VvMRJ+RL0MnSIvDBE6xXtqt1HTkmJ6GMvJ6RCO/42icP1znludv8LAWhr75FEKsoVxm9HhO6VtmNQRhqck9AsPSLhsV9Idd7A=
+  on:
+    tags: true

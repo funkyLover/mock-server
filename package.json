@@ -1,6 +1,6 @@
 {
   "name": "mock-server-local",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Mock your apis with a node server",
   "main": "index.js",
   "bin": {
@@ -11,10 +11,14 @@
     "url": "https://github.com/funkyLover/mock-server.git"
   },
   "scripts": {
+    "install:fe": "cd fe && npm install",
     "dev": "npm run dev:mock & npm run dev:fe",
     "dev:mock": "node ./bin/index.js -p 8888 -d ./fe/mock",
     "dev:fe": "cd fe && npm run serve",
     "build:fe": "cd fe && npm run build",
+    "lint": "npm run lint:server && npm run lint:fe",
+    "lint:server": "eslint --quiet --ext .js -c .eslintrc.js --ignore-pattern .eslintignore ./",
+    "lint:fe": "cd fe && npm run lint",
     "test": "npm run test:cli && npm run test:server",
     "test:cli": "node test/cli/run.js",
     "test:server": "jest",
