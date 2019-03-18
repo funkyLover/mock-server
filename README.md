@@ -417,6 +417,7 @@ npm run dev # cwd: /path/to/mock-server
 
 ## Roadmap
 
+- pac support
 - ws support
 - run as daemon process
 - request record

@@ -414,6 +414,7 @@ npm run dev # cwd: /path/to/mock-server
 
 ## Roadmap
 
+- 支持pac
 - socket支持
 - 以后台进程运行
 - 请求记录与展示
