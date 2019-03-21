@@ -1,6 +1,6 @@
 <template>
   <div class="page-set">
-    <el-collapse accordion v-if="!isEmpty">
+    <el-collapse v-if="!isEmpty">
       <el-collapse-item class="sets" v-for="(val, key) in sets" :key="key">
         <template slot="title">
           <el-checkbox

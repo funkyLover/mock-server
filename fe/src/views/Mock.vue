@@ -1,6 +1,6 @@
 <template>
   <div class="page-mock">
-    <el-collapse accordion v-if="!isEmpty">
+    <el-collapse v-if="!isEmpty">
       <el-collapse-item v-for="(val, key) in mocks" :key="key">
         <template slot="title">
           {{ key }}
