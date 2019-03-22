@@ -154,12 +154,12 @@ test('it will return code 0 when request "/$set-check" with correct params', () 
 
   return instance.get(`/$set-check?id=${setId}`).then(async res => {
     const status = getStatus();
-    const dir = status.dir;
-    const checkFile = path.resolve(dir, '_checked.js');
+    // const dir = status.dir;
+    // const checkFile = path.resolve(dir, '_checked.js');
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('0');
     expect(status.setChecked).toBe(setId);
-    expect(fs.existsSync(checkFile)).toBe(true);
+    // expect(fs.existsSync(checkFile)).toBe(true);
     getStatus.mockReset();
     server.close();
   });
