@@ -14,7 +14,7 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside class="app-menu">
+      <el-aside class="app-menu" width="20%">
         <el-row>
           <el-col :span="24">
             <el-menu class="menu" :router="true" :default-active="$route.path">
@@ -92,5 +92,7 @@ export default {
 
 .app .app-menu {
   background: $white;
+  max-width: 300px;
+  min-width: 200px;
 }
 </style>

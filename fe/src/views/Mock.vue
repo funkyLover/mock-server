@@ -89,6 +89,9 @@ export default {
 
     .el-checkbox__label {
       font-size: 16px;
+      &:hover {
+        color: $main;
+      }
     }
   }
 
