@@ -243,3 +243,29 @@ test('mock with data', () => {
     server.close();
   });
 });
+
+test('mock with restful api', () => {
+  const data = { code: 1 };
+  getStatus.mockImplementationOnce(() => {
+    return {
+      mock: {
+        'api.mock.com/api/:id/name': [
+          {
+            data: () => ({ data }),
+            ...defaultConfig
+          }
+        ],
+        _set: {}
+      },
+      mockChecked: { 'api.mock.com/api/:id/name': 0 },
+      setChecked: null
+    };
+  });
+  const { instance, server } = setEnv(8088);
+
+  return instance.get('/api/123/name').then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual(data);
+    server.close();
+  });
+});
