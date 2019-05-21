@@ -51,7 +51,7 @@ test('return empty object when mock data is not exist(input a not exist mock pat
 });
 
 test('return mock object when mock data is exist(example/simple)', () => {
-  expect(getMock('./example/simple')).toEqual({
+  expect(getMock('./example/simple')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -71,7 +71,7 @@ test('return mock object when mock data is exist(example/simple)', () => {
 });
 
 test('return mock object when mock data is exist(example/data in json file)', () => {
-  expect(getMock('./example/data in json file')).toEqual({
+  expect(getMock('./example/data in json file')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -91,7 +91,7 @@ test('return mock object when mock data is exist(example/data in json file)', ()
 });
 
 test('return mock object when mock data is exist(example/data in file(not js || json))', () => {
-  expect(getMock('./example/data in file(not js || json)')).toEqual({
+  expect(getMock('./example/data in file(not js || json)')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -111,7 +111,7 @@ test('return mock object when mock data is exist(example/data in file(not js || 
 });
 
 test('return mock object when mock data is exist(example/http delay 2s)', () => {
-  expect(getMock('./example/http delay 2s')).toEqual({
+  expect(getMock('./example/http delay 2s')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -131,7 +131,7 @@ test('return mock object when mock data is exist(example/http delay 2s)', () => 
 });
 
 test('return mock object when mock data is exist(example/status 404)', () => {
-  expect(getMock('./example/status 404')).toEqual({
+  expect(getMock('./example/status 404')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -151,7 +151,7 @@ test('return mock object when mock data is exist(example/status 404)', () => {
 });
 
 test('return mock object when mock data is exist(example/http keep alive)', () => {
-  expect(getMock('./example/http keep alive')).toEqual({
+  expect(getMock('./example/http keep alive')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -171,7 +171,7 @@ test('return mock object when mock data is exist(example/http keep alive)', () =
 });
 
 test('return mock object when mock data is exist(example/with proxy)', () => {
-  expect(getMock('./example/with proxy')).toEqual({
+  expect(getMock('./example/with proxy')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -194,7 +194,7 @@ test('return mock object when mock data is exist(example/with proxy)', () => {
 
 test('return mock object when mock data is exist(example/with proxy dir)', () => {
   const mock = getMock('./example/with proxy dir');
-  expect(mock).toEqual({
+  expect(mock).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
@@ -214,7 +214,7 @@ test('return mock object when mock data is exist(example/with proxy dir)', () =>
 });
 
 test('return mock object when mock data is exist(example/multiple options)', () => {
-  expect(getMock('./example/multiple options')).toEqual({
+  expect(getMock('./example/multiple options')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
