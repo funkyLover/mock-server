@@ -1,4 +1,7 @@
-# Mock Server
+
+<p align="center">
+  <img src="../img/cover.png" alt="Mock Server" width="70%"/>
+</p>
 
 [![build](https://travis-ci.com/funkyLover/mock-server.svg?branch=master)](https://travis-ci.com/funkyLover/mock-server)
 [![npm](https://img.shields.io/npm/v/mock-server-local.svg)](https://www.npmjs.com/package/mock-server-local)
