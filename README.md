@@ -1,4 +1,7 @@
-# Mock Server
+
+<p align="center">
+  <img src="./docs/img/cover.png" alt="Mock Server" width="70%"/>
+</p>
 
 [中文文档](./docs/zh/README.md)
 
