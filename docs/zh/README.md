@@ -192,6 +192,13 @@ module.exports = `
 <body>return html</body>
 </html>
 `;
+
+// ${mock dir}/path/represent/your/api/return html/http.js
+module.exports = {
+  header: {
+    'Content-Type': 'text/html; charset=UTF-8',
+  }
+}
 ```
 
 ![check select return html](../img/3.png)
