@@ -4,6 +4,7 @@ const Koa = require('koa');
 const axios = require('axios');
 const { getStatus, setStatus } = require('../lib/server/status');
 const localMiddleware = require('../lib/server/local');
+const mockMiddleware = require('../lib/server/mock');
 const send = require('koa-send');
 
 jest.mock('../lib/server/status');
@@ -30,10 +31,21 @@ function setupEnv(port) {
 
   const app = new Koa();
   app.use(localMiddleware);
+  app.use(mockMiddleware);
   const server = app.listen(port);
 
   return { instance, server };
 }
+
+const defaultConfig = {
+  delay: 0.1,
+  status: 200,
+  header: {
+    'Content-Type': 'application/json; charset=UTF-8',
+    Connection: 'Close',
+    'Access-Control-Allow-Origin': '*'
+  }
+};
 
 test('it will return html when request "/view" by local ip(127.0.0.1)', () => {
   const { instance, server } = setupEnv(8890);
@@ -214,6 +226,35 @@ test('it will return error when mock data is exist', () => {
   return instance.get('/$create?type=set').then(res => {
     expect(res.status).toBe(200);
     expect(res.data.code).toBe('-1');
+    server.close();
+  });
+});
+
+test('can access mock through local ip request', () => {
+  const { instance, server } = setupEnv(8902);
+  const data = { code: 1 };
+  getStatus.mockImplementationOnce(() => {
+    return { localIp: ['127.0.0.1:8902'] };
+  });
+  getStatus.mockImplementationOnce(() => {
+    return {
+      mock: {
+        'api.mock.com/api': [
+          {
+            data: () => ({ data }),
+            ...defaultConfig
+          }
+        ],
+        _set: {}
+      },
+      mockChecked: { 'api.mock.com/api': 0 },
+      setChecked: null
+    };
+  });
+
+  return instance.get('/$mock-api?api=api.mock.com/api').then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual(data);
     server.close();
   });
 });
