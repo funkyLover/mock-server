@@ -1,6 +1,6 @@
 {
   "name": "mock-server-local",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Mock your apis with a node server",
   "main": "index.js",
   "bin": {
@@ -38,7 +38,7 @@
   },
   "author": "ahui-lin@qq.com",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "chokidar": "^2.1.0",
     "commander": "^2.19.0",
     "fs-extra": "^7.0.1",
