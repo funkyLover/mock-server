@@ -1,4 +1,3 @@
-
 <p align="center">
   <img src="../img/cover.png" alt="Mock Server" width="70%"/>
 </p>
@@ -8,11 +7,11 @@
 ![node version](https://img.shields.io/node/v/mock-server-local.svg)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
 
-一个用于解决前后端分离并行开发时前端依赖接口数据问题的小工具, 通过读取本地文件生成mock api配置并启动node服务器. 然后只需把前端请求转发到该服务器即可
+一个用于解决前后端分离并行开发时前端依赖接口数据问题的小工具, 通过读取本地文件生成 mock api 配置并启动 node 服务器. 然后只需把前端请求转发到该服务器即可
 
 ## 安装
 
-mock-server-local运行环境需node v8.x及以上版本支持
+mock-server-local 运行环境需 node v8.x 及以上版本支持
 
 全局安装
 
@@ -45,31 +44,75 @@ Options:
 
 **注意**: 当指定端口号时(`-p/--port`), 如果指定的端口已被占用, 会直接返回启动失败, 只有使用默认端口号启动, 才会进行端口可用性检查, 并动态确定可用端口
 
-### 启动服务器
+### 启动 mock server
+
+新建文件夹用于存放 mock 数据配置. 假设需要 mock 的接口 url 为`api.target.com/api/login`, 且该接口需要模拟三种行为.
+
+- `api.target.com/api/login`
+  1. 登录成功, 返回用户信息及登录态
+  1. 登录失败, 返回错误原因
+  1. 耗时过长, 导致前端请求超时
+
+那么 mock 文件配置目录结构应该如下如下所示
+
+```bash
+|- mock
+  |- api.target.com
+    |- api
+      |- login
+        |- 登录成功
+          |- data.js # data文件定义响应的数据
+        |- 登录失败
+          |- data.js
+        |- 耗时过长导致前端超时
+          |- data.js
+          |- http.js # htpp文件控制响应行为, 如定义http header, 请求耗时等
+```
+
+配置好 mock 数据后启动 mock server
 
 ```bash
 mock -p 8888 -d ./mock # ./mock 为存放mock数据的目录
 
 you can access mock server:
 http://127.0.0.1:8888
-http://192.168.0.1:8888 # local ip
+http://xx.xxx.x.xxx:8888 # 本机局域网ip
 
 you can access mock server view:
 http://127.0.0.1:8888/view
-http://192.168.0.1:8888/view # local ip
+http://xx.xxx.x.xxx:8888/view # 本机局域网ip
 ```
 
-然后使用浏览器访问前端页面(`http://127.0.0.1:${port}/view`)
+然后访问 mock 服务前端控制面板`http://127.0.0.1:8888/view/mocks`, 勾选希望响应的数据
+
+```js
+//mock/api.target.com/api/login/登录成功/data.js
+module.exports = {
+  code: '0',
+  msg: 'ok',
+  data: {
+    username: 'ahui'
+  }
+};
+```
+
+<p align="center">
+  <img src="../img/zh/1.png" alt="Mock Server" width="70%"/>
+</p>
+
+可以直接请求访问`http://127.0.0.1:8888/$mock-api?api=api.target.com/api/login`验证 mock 数据是否正确配置
+
+<p align="center">
+  <img src="../img/zh/2.png" alt="Mock Server" width="70%"/>
+</p>
 
 ## 项目设置
 
-启动mock服务器后, 我们需要把项目的请求都代理到我们mock服务器上去
-
-假设我们的服务器为`http://127.0.0.1:8888`, mock的api为`api.mock.com/api-bin/*`
+启动 mock 服务器后, 我们需要把对于业务域名的请求都转发到启动的 mock server
 
 ### react(create-react-app)
 
-详情可看[create-react-app#docs](https://facebook.github.io/create-react-app/docs/proxying-api-requests-in-development#configuring-the-proxy-manually)
+更多配置详情可翻阅官方文档[create-react-app#docs](https://facebook.github.io/create-react-app/docs/proxying-api-requests-in-development#configuring-the-proxy-manually)
 
 ```js
 // src/setupProxy.js
@@ -79,10 +122,10 @@ module.exports = function(app) {
   const options = {
     target: 'http://127.0.0.1:8888', // mock服务器
     headers: {
-      host: 'api.mock.com' // 这里要填具体mock的api的host
+      host: 'api.target.com' // 业务域名
     }
   };
-  app.use(proxy('/api-bin', options));
+  app.use(proxy('/api', options)); // api.target.com -> 127.0.0.1:8888
 };
 ```
 
@@ -93,10 +136,10 @@ module.exports = function(app) {
 // ...
 devServer: {
   proxy: {
-    '/api-bin': {
+    '/api': {
       target: 'http://127.0.0.1:8888',
       headers: {
-        host: 'api.mock.com' // 本地测试不起效
+        host: 'api.target.com'
       },
       onProxyReq: function(proxyReq, req, res) {
         proxyReq.setHeader('host', 'api.mock.com');
@@ -107,7 +150,7 @@ devServer: {
 // ...
 ```
 
-### vue webpack模板(vue-cli 2.x)
+### vue webpack 模板(vue-cli 2.x)
 
 ```js
 // config/index.js
@@ -116,7 +159,7 @@ proxyTable: {
   '/api': {
     target: 'http://127.0.0.1:8888',
     headers: {
-      host: 'api.mock.com'
+      host: 'api.target.com'
     }
   }
 }
@@ -131,249 +174,23 @@ proxyTable: {
 
 ### 代理工具
 
-如果你的项目不依赖webpack(或其他类似打包工具), 也没有办法使用[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)进行代理
+如果你的项目不依赖 webpack(或其他类似打包工具), 也没有办法使用[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)进行代理
 
 那可以使用代理工具进行转发, 如[whistle](https://github.com/avwo/whistle)
 
 ```bash
-api.mock.com/api-bin 127.0.0.1:8888 # api.mock.com/api-bin/*的请求都会被转发到mock服务器
-api.mock.com 127.0.0.1:8080 # 开发时用于server前端资源启动的本地服务器
-# api.mock.com /path/to/your/fe/project/index.html # 或者直接使用本地文件
+api.target.com/api 127.0.0.1:8888 # api.mock.com/api/*的请求都会被转发到mock服务器
 ```
 
-## mock api
+## 更多文档说明
 
-如果你想mock的api完整url为`api.mock.com/api-bin/api1`, 目录结构应该如下所示(文档中出现的完整配置, 可见[docs/mock](../mock))
-
-```
-${mock dir}
-  |- api.mock.com
-    |- api-bin
-      |- api1
-        |- option1
-          |- data.js
-        |- option2
-          |- data.js
-```
-
-## 多状态切换
-
-你可以在一个api下存放多个状态的数据返回, 通过在前端页面(`http://127.0.0.1:${port}/view/mocks`), 勾选中希望返回的状态
-
-```js
-// ${mock dir}/api.mock.com/api1/option1/data.js
-module.exports = {
-  code: '0',
-  msg: 'return option 1'
-};
-
-// ${mock dir}/api.mock.com/api1/option2/data.js
-module.exports = {
-  code: '0',
-  msg: 'return option 2'
-};
-```
-
-![check select option1](../img/1.png)
-
-然后通过代理请求到`api.mock.com/api-bin/api1`
-
-![response with option1](../img/2.png)
-
-## 更多配置
-
-### 返回html
-
-```js
-// ${mock dir}/path/represent/your/api/return html/data.js
-module.exports = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Document</title>
-</head>
-<body>return html</body>
-</html>
-`;
-
-// ${mock dir}/path/represent/your/api/return html/http.js
-module.exports = {
-  header: {
-    'Content-Type': 'text/html; charset=UTF-8',
-  }
-}
-```
-
-![check select return html](../img/3.png)
-![response with option1 - return html](../img/4.png)
-
-### 耗时api
-
-如果要模拟耗时过长的api, 可通过`http.js`进行指定
-
-```js
-// ${mock dir}/path/represent/your/api/time cose 2s/data.js
-module.exports = {
-  code: '0',
-  msg: 'response after 2s'
-};
-
-// ${mock dir}/path/represent/your/api/time cose 2s/http.js
-module.exports = {
-  delay: 2, // 如果没有http.js文件或没有指定delay, 默认为0.2
-}
-```
-
-![response after 2s](../img/5.png)
-![status of response](../img/6.png)
-
-### http请求状态码
-
-如果需要模拟api除200以外的状态码, 同样可以通过`http.js`中指定
-
-```js
-// ${mock dir}/path/represent/your/api/http statuc code 404/data.js
-module.exports = 'Not Found';
-
-// ${mock dir}/path/represent/your/api/http statuc code 404/http.js
-module.exports = {
-  status: 404
-}
-```
-
-![response Not Found](../img/7.png)
-![response status code 404](../img/8.png)
-
-### http.js更多配置
-
-`http.js`支持的配置项和默认值如下, 可根据需求自行调整
-
-```js
-// http.js
-module.exports = {
-  header: {
-    Connection: 'Close',
-    'Content-Type': 'application/json; charset=UTF-8',
-    'Access-Control-Allow-Origin': '*'
-  }, // http header
-  status: 200, // http请求状态码, 默认为200
-  delay: 0.2 // 请求耗时, 默认为0.2s
-}
-```
-
-### js逻辑
-
-`data.js`可export一个函数, 传入参数[ctx](https://koajs.com/#context), 需要返回一个带data字段数据的对象
-
-```
-function(ctx: koa context): Object { data, [header, status, delay] }
-```
-
-```js
-// ${mock dir}/path/represent/your/api/mock with function/data.js
-module.exports = function(ctx) {
-  const { request: req } = ctx;
-  let { id } = req.query;
-
-  return {
-    data: {
-      code: '0',
-      msg: `you request with id: ${id}`
-    }
-  };
-}
-```
-
-![mock with function](../img/9.png)
-
-你可以在方法中尽可能去模拟线上api的行为, 包括http请求方法的限制, 参数检查等, 并根据不同的输入响应不同的输出.
-
-**注意**: 当`data.js`中需要使用外部npm模块时, 务必不要在模块安装到`${mock dir}`根目录下, 请安装到`${mock dir}`的父级目录
-
-```bash
-# cwd: ./
-npm install
-```
-
-```js
-// cwd: ./mock/path/represent/your/api/mock with function/data.js
-const xxx = require('xxx'); // npm模块
-module.exports = {};
-```
-
-## 代理线上数据
-
-有时候在项目迭代中, 线上/测试环境服务器上的部分api是可用的
-
-这时可能只需要mock新增的api, 而没有勾选返回的mock api或mock数据没有定义的api, 则直接请求到目标服务器
-
-```js
-// ${mock dir}/proxy.js
-module.exports = {
-  'api.mock.com': 'https://192.168.0.xxx' // ip为请求最终指向的服务器ip, 注意协议https/http不可省略
-};
-```
-
-![proxy to target server](../img/10.png)
-
-这个时候你请求 `api.mock.com/api-bin/api1` 或 `api.mock.com/api-bin/api2`, 都会最终请求到ip为`192.168.0.xxx`的服务器.
-
-## 批量切换
-
-不同的业务逻辑/异常流程, 可能都不仅仅只牵扯到1个接口
-
-当要模拟线上完整的操作流程时, 如果涉及多个接口多个状态切换, 可能就会比较麻烦
-
-这个时候可以定义在mock数据存放目录下新增`_set`目录, 用于存放多个mock api流程的数据
-
-```
-${mock dir}
-  |- _set
-    |- api flow 1
-      |- api.mock.com
-        |- api-bin
-          |- api1
-            |- data.js
-          |- api2
-            |- data.js
-```
-
-```js
-// ${mock dir}/_set/path/represent/your/api/api1/data.js
-module.exports = {
-  code: '0',
-  msg: 'match api flow, return from api1'
-}
-
-// ${mock dir}/_set/path/represent/your/api/api2/data.js
-module.exports = {
-  code: '0',
-  msg: 'match api flow, return from api2'
-}
-
-// 另外你可以直接使用mock api配置中的data
-// ${mock dir}/_set/path/represent/your/api/api2/data.js
-const data = require('${mock dir}/path/represent/your/api/option1/data.js');
-module.exports = data;
-```
-
-然后进入页面(`http://127.0.0.1:${port}/view/sets`)进行勾选
-
-![mock with function](../img/11.png)
-![mock with function](../img/12.png)
-![mock with function](../img/13.png)
-
-这个时候请求api会优先对mock set中的api进行匹配
-
-如匹配到了则返回, 如匹配失败就会在mock api中再次匹配
-
-如果mock api中也匹配失败, 则会检查`proxy.js`并转发到线上
-
-如并没有配置线上ip, 则会直接返回404
+- [切换响应的 mock 数据](./switch.md)
+- [data & http 配置说明](./config.md)
+- [请求转发](./proxy.md)
 
 ## 推荐用法
 
-建议将mock-server-local作为开发依赖安装到具体项目中去
+建议将 mock-server-local 作为开发依赖安装到具体项目中去
 
 ```bash
 cd xxx_project
@@ -381,15 +198,15 @@ cd xxx_project
 npm install mock-server-local --save-dev
 ```
 
-在项目目录下新建mock目录用于存放mock api配置
+在项目目录下新建 mock 目录用于存放 mock 数据配置
 
 ```
-|- xxx_project
+|- xxx_proj
   |- mock
   |- package.json
 ```
 
-然后使用npm script来启动mock服务器
+然后使用 `npm script` 来启动 mock 服务器
 
 ```js
 // package.json
@@ -406,9 +223,9 @@ npm install mock-server-local --save-dev
 npm run mock
 ```
 
-以项目为维度存放mock数据, 项目成员共同维护
+以项目为维度存放 mock 数据, 项目成员共同维护
 
-而且项目的新加入成员也可以通过mock数据更好的了解熟悉具体的业务逻辑/异常流程
+而且项目的新加入成员也可以通过 mock 数据更好的了解熟悉具体的业务逻辑/异常流程
 
 ## 开发
 
@@ -424,8 +241,8 @@ npm run dev # cwd: /path/to/mock-server
 
 ## Roadmap
 
-- 支持pac
-- socket支持
+- 支持 pac
+- socket 支持
 - 以后台进程运行
 - 请求记录与展示
 - ...

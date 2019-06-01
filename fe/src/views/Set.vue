@@ -1,18 +1,22 @@
 <template>
   <div class="page-set">
     <el-collapse v-if="!isEmpty">
-      <el-collapse-item class="sets" v-for="(val, key) in sets" :key="key">
+      <el-collapse-item
+        class="sets"
+        v-for="(setVal, setKey) in sets"
+        :key="setKey"
+      >
         <template slot="title">
           <el-checkbox
             class="set-check"
-            :value="setChecked === key"
-            @change="bindCheckItem(key)"
+            :value="setChecked === setKey"
+            @change="bindCheckItem(setKey)"
           ></el-checkbox
-          >{{ key }}
+          >{{ setKey }}
         </template>
-        <div v-for="(api, apiKey) in val" :key="apiKey">
+        <div v-for="(api, apiKey) in setVal" :key="apiKey">
           <el-collapse accordion class="api-details">
-            <el-collapse-item v-for="(val, key) in sets" :key="key">
+            <el-collapse-item>
               <template slot="title">
                 {{ apiKey }}
               </template>
