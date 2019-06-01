@@ -38,6 +38,8 @@ module.exports = {
 api.target.com/api 127.0.0.1:8888
 ```
 
-当请求的接口在 mock server 中没有配置或没有被勾选时, 就会被请求转发到目标 ip 或 url
+当请求的接口在 mock server 中没有配置或对应的接口 mock 没有被勾选要响应的数据时
 
-而如果连`proxy.js`也没有配置转发规则, 则会直接请求线上
+接口请求就会被转发到目标 ip 或 url
+
+而如果`proxy.js`也没有配置转发规则, 则会直接请求线上

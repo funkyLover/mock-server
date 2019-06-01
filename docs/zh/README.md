@@ -108,7 +108,7 @@ module.exports = {
 
 ## 项目设置
 
-启动 mock 服务器后, 我们需要把对于业务域名的请求都转发到启动的 mock server
+启动 mock 服务器后, 我们需要把业务域名的请求都转发到启动的 mock server
 
 ### react(create-react-app)
 

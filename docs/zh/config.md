@@ -1,6 +1,6 @@
 # data & http 配置说明
 
-每个接口 mock 数据配置目录下, 可以通过`data.js`返回要导出的数据, 通过`http.js`控制响应行为
+每个接口 mock 数据配置目录下, 可以通过`data.js`导出要响应的数据, 而`http.js`则用于定义http响应行为
 
 ```js
 // http默认配置
@@ -15,7 +15,7 @@
 }
 ```
 
-## 接口响应 html 页面
+## 响应 html 页面
 
 ```js
 // mock/****/data.js
@@ -39,7 +39,7 @@ module.exports = {
 
 ## 耗时接口
 
-如希望模拟接口处理时间过长, 导致前端请求超时等场景, 可在`http.js`中配置
+如希望模拟控制接口处理时间, 如耗时过长导致前端请求超时等场景, 可在`http.js`中配置
 
 ```js
 // mock/****/data.js
@@ -54,7 +54,7 @@ module.exports = {
 };
 ```
 
-## http 请求状态码
+## http 状态码
 
 如果需要模拟接口返回 200 以外的 http 状态码, 同样可以通过`http.js`中指定
 
@@ -76,7 +76,7 @@ module.exports = {
 
 ```js
 // mock/****/data.js
-module..exports = (ctx) => {
+module.exports = (ctx) => {
   // 参数检查
   // 响应数据生成
   // .....
@@ -87,6 +87,15 @@ module..exports = (ctx) => {
     status: 200, // 可选返回, 同http.js#status
     delay: 0.2, // 可选返回, 同http.js#delay
   }
+}
+
+// 异步逻辑可以使用async方法, 或返回promise
+module.exports = async (ctx) => {
+  // ...
+
+  return {
+    data: {}
+  };
 }
 ```
 
