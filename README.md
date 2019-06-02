@@ -10,7 +10,7 @@
 ![node version](https://img.shields.io/node/v/mock-server-local.svg)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
 
-A widget for mocking back-end api when development, it will generate a mock api configuration by local file, and start a node server. Then just forward the front-end request to that server.
+A widget for mocking back-end api when development, it will generate mock data by local file configuration, and start a node server. Then just forward the client-side request to that server.
 
 ## Installation
 
@@ -47,7 +47,30 @@ Options:
 
 **Attention**: When the port is specified (`-p/--port`), if the specified port is already occupied, it will return error and fail to start server. It will perform port availability checks and dynamically determine ports only when start with the default port.
 
-### Start server
+### Start mock server
+
+Setup a new folder to store the mock data configuration. Suppose the api that need to be mock is `api.target.com/api/login`, and the should simulate three behaviors.
+
+- `api.target.com/api/login`
+  1. Login succeeds, return user information and login status
+  1. Login failed, return the cause of the error
+  1. It takes too long, causing the frontend request to time out
+
+Then the mock file configuration directory structure should look like this:
+
+```bash
+|- mock
+  |- api.target.com
+    |- api
+      |- login
+        |- login success
+          |- data.js # define res data
+        |- login fail
+          |- data.js
+        |- it takes too long
+          |- data.js
+          |- http.js # define res http header, status code, time cost
+```
 
 ```bash
 mock -p 8888 -d ./mock # ./mock is the dir wherr you place the mock api data
@@ -61,13 +84,34 @@ http://127.0.0.1:8888/view
 http://192.168.0.1:8888/view # local ip
 ```
 
-And then visit `http://127.0.0.1:${port}/view` in browser.
+And then visit `http://127.0.0.1:8888/view/mocks` in browser. Check the data you want to respond to api.
+
+```js
+//mock/api.target.com/api/login/login success/data.js
+module.exports = {
+  code: '0',
+  msg: 'ok',
+  data: {
+    username: 'ahui'
+  }
+};
+```
+
+<p align="center">
+  <img src="./docs/img/en/1.png" alt="Mock server panel" width="70%"/>
+</p>
+
+You can directly request `http://127.0.0.1:8888/$mock-api?api=api.target.com/api/login` to verify that the mock data is properly configured.
+
+<p align="center">
+  <img src="./docs/img/en/2.png" alt="Verify mock server" width="70%"/>
+</p>
 
 ## Project Settings
 
 After starting the mock server, we need to proxy the project's request to our mock server.
 
-Suppose our mock server is `http://127.0.0.1:8888`, and the mock api is `api.mock.com/api-bin/*`.
+Suppose our mock server is `http://127.0.0.1:8888`, and the mock api is `api.target.com/api/*`.
 
 ### react(create-react-app)
 
@@ -81,10 +125,10 @@ module.exports = function(app) {
   const options = {
     target: 'http://127.0.0.1:8888', // mock server
     headers: {
-      host: 'api.mock.com' // here to fill in the host of the specific mock api
+      host: 'api.target.com' // here to fill in the host of the specific mock api
     }
   };
-  app.use(proxy('/api-bin', options));
+  app.use(proxy('/api', options));
 };
 ```
 
@@ -95,13 +139,13 @@ module.exports = function(app) {
 // ...
 devServer: {
   proxy: {
-    '/api-bin': {
+    '/api': {
       target: 'http://127.0.0.1:8888',
       headers: {
-        host: 'api.mock.com' // not work
+        host: 'api.target.com' // not work
       },
       onProxyReq: function(proxyReq, req, res) {
-        proxyReq.setheader('host', 'api.mock.com');
+        proxyReq.setheader('host', 'api.target.com');
       }
     }
   }
@@ -118,7 +162,7 @@ proxyTable: {
   '/api': {
     target: 'http://127.0.0.1:8888',
     headers: {
-      host: 'api.mock.com'
+      host: 'api.target.com'
     }
   }
 }
@@ -133,246 +177,20 @@ Its configuration are no different from the above three, because the above three
 
 ### Proxy Tools
 
-If your project does not base on webpack's functionality (or other module bundler tools), and not using [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware) too.
+If your project does not depend on webpack (or other module bundler tools), and not using [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware) too.
 
 Also can forward request using a proxy tool, such as [whistle](https://github.com/avwo/whistle).
 
 ```bash
-api.mock.com/api-bin 127.0.0.1:8888 # api.mock.com/api-bin/* requests will be forwarded to the mock server
-api.mock.com 127.0.0.1:8080 # Local server for server front-end resource during development
-# api.mock.com /path/to/your/fe/project/index.html # Or use local files
+api.target.com/api 127.0.0.1:8888 # api.target.com/api/* requests will be forwarded to the mock server
+api.target.com 127.0.0.1:8080 # Local server for server front-end resource during development
 ```
 
-## Mock api
+## More documentation
 
-If you want the mock api with full url to be `api.mock.com/api-bin/api1`, the directory structure should as follows (the full configuration can be found in [docs/mock](./docs/mock))
-
-```
-${mock dir}
-  |- api.mock.com
-    |- api-bin
-      |- api1
-        |- option1
-          |- data.js
-        |- option2
-          |- data.js
-```
-
-## Status switching
-
-An mocked api can store multiple state data returns. You can select the check box with the status want to be responded. (`http://127.0.0.1:${port}/view/mocks`).
-
-```js
-// ${mock dir}/api.mock.com/api1/option1/data.js
-module.exports = {
-  code: '0',
-  msg: 'return option 1'
-};
-
-// ${mock dir}/api.mock.com/api1/option2/data.js
-module.exports = {
-  code: '0',
-  msg: 'return option 2'
-};
-```
-
-![check select option1](./docs/img/1.png)
-
-Then request to `api.mock.com/api-bin/api1` through proxy.
-
-![response with option1](./docs/img/2.png)
-
-## More configuration
-
-### Respond html
-
-```js
-// ${mock dir}/path/represent/your/api/return html/data.js
-module.exports = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Document</title>
-</head>
-<body>return html</body>
-</html>
-`;
-
-// ${mock dir}/path/represent/your/api/return html/http.js
-module.exports = {
-  header: {
-    'Content-Type': 'text/html; charset=UTF-8',
-  }
-}
-```
-
-![check select return html](./docs/img/3.png)
-![response with option1 - return html](./docs/img/4.png)
-
-### Time-consuming api
-
-If you want to simulate an api that takes long time, you can specify it with `http.js`.
-
-```js
-// ${mock dir}/path/represent/your/api/time cose 2s/data.js
-module.exports = {
-  code: '0',
-  msg: 'response after 2s'
-};
-
-// ${mock dir}/path/represent/your/api/time cose 2s/http.js
-module.exports = {
-  delay: 2, // If there is no http.js file or no delay is specified, the default is 0.2.
-}
-```
-
-![response after 2s](./docs/img/5.png)
-![status of response](./docs/img/6.png)
-
-### Http status code
-
-If you need to simulate the status code of api other than 200, you can also specify it in `http.js`.
-
-```js
-// ${mock dir}/path/represent/your/api/http statuc code 404/data.js
-module.exports = 'Not Found';
-
-// ${mock dir}/path/represent/your/api/http statuc code 404/http.js
-module.exports = {
-  status: 404
-}
-```
-
-![response Not Found](./docs/img/7.png)
-![response status code 404](./docs/img/8.png)
-
-### http.js
-
-The configuration and default values ​​supported by `http.js` are as follows.
-
-```js
-// http.js
-module.exports = {
-  header: {
-    Connection: 'Close',
-    'Content-Type': 'application/json; charset=UTF-8',
-    'Access-Control-Allow-Origin': '*'
-  }, // http header
-  status: 200, // http request status code, default is 200
-  delay: 0.2 // time cost of api, default is 0.2s
-}
-```
-
-### Javascript functionality
-
-`data.js` can export a function, which will be passed a [ctx] param (https://koajs.com/#context) and need to return an object that contains data.
-
-```
-function(ctx:koa context):Object {data,[header,status,delay]}
-```
-
-```js
-// ${mock dir}/path/represent/your/api/mock with function/data.js
-module.exports = function(ctx) {
-  const { request: req } = ctx;
-  let { id } = req.query;
-
-  return {
-    data: {
-      code: '0',
-      msg: `you request with id: ${id}`
-    }
-  };
-}
-```
-
-![mock with function](./docs/img/9.png)
-
-You can simulate the behavior of the online api as much as possible in function, including the validate the http request(http method, params, etc.), and respond different outputs depending on the input.
-
-**Attention**: If you want external npm module in `data.js`, be sure not to install the module into `${mock dir}`'s root directory, please install it to the parent directory of `${mock dir}`.
-
-
-```bash
-# cwd: ./
-npm install
-```
-
-```js
-// cwd: ./mock/path/represent/your/api/mock with function/data.js
-const xxx = require('xxx'); // npm模块
-module.exports = {};
-```
-
-## Forward to online api
-
-Sometimes with project iterations, some of the apis on the online/test server are available.
-
-You may only need to mock some new apis. When the request do not match your mock configuration, it will be forwarded to target server.
-
-```js
-// ${mock dir}/proxy.js
-module.exports = {
-  'api.mock.com': 'https://192.168.0.xxx' // the server ip that the request will be forwarded to. Note that the protocol https/http cannot be omitted.
-};
-```
-
-![proxy to target server](./docs/img/10.png)
-
-The request to `api.mock.com/api-bin/api1` or `api.mock.com/api-bin/api2`, will eventually request a server with ip `192.168.0.xxx`.
-
-## Set switching
-
-Different business logic/exceptional processes may involve more than one api.
-
-When you want to simulate a complete online operation process, it may be troublesome to select the checkbox of many apis.
-
-So you can new a `_set` directory in `${mock dir}`, `_set` is used to place multiple set of apis.
-
-```
-${mock dir}
-  |- _set
-    |- api flow 1
-      |- api.mock.com
-        |- api-bin
-          |- api1
-            |- data.js
-          |- api2
-            |- data.js
-```
-
-```js
-// ${mock dir}/_set/path/represent/your/api/api1/data.js
-module.exports = {
-  code: '0',
-  msg: 'match api flow, return from api1'
-}
-
-// ${mock dir}/_set/path/represent/your/api/api2/data.js
-module.exports = {
-  code: '0',
-  msg: 'match api flow, return from api2'
-}
-
-// In addition, you can directly use the data in the mock api configuration.
-// ${mock dir}/_set/path/represent/your/api/api2/data.js
-const data = require('${mock dir}/path/represent/your/api/option1/data.js');
-module.exports = data;
-```
-
-Then go to the page (`http://127.0.0.1:${port}/view/sets`) to select the a set which should be responded.
-
-![mock with function](./docs/img/11.png)
-![mock with function](./docs/img/12.png)
-![mock with function](./docs/img/13.png)
-
-the request will preferentially match the api in the mock set.
-
-Respond if it matches, or it will try to match again in mock api(in `http://127.0.0.1:${port}/view/mocks`) when fail in set match.
-
-If fails again, it will check `proxy.js` and forward it to the target server.
-
-If the proxy ip is not configured, it will return 404 directly.
+- [Switch mock data](./docs/en/switch.md)
+- [Configuration(data & http)](./docs/en/config.md)
+- [Proxy](./docs/en/config.md)
 
 ## Recommend
 
@@ -386,13 +204,13 @@ npm install mock-server-local --save-dev
 
 Create a mock directory in the project directory to place the mock api configuration.
 
-```
+```bash
 |- xxx_project
   |- mock
   |- package.json
 ```
 
-Then use npm script to start the mock server
+Then use `npm script` to start the mock server
 
 ```js
 // package.json

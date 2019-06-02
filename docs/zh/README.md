@@ -7,7 +7,7 @@
 ![node version](https://img.shields.io/node/v/mock-server-local.svg)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
 
-一个用于解决前后端分离并行开发时前端依赖接口数据问题的小工具, 通过读取本地文件生成 mock api 配置并启动 node 服务器. 然后只需把前端请求转发到该服务器即可
+一个用于解决前后端分离并行开发时前端依赖接口数据问题的小工具, 通过读取本地文件配置生成 mock 数据并启动 node 服务器. 然后只需把客户端请求转发到该服务器即可
 
 ## 安装
 
@@ -66,7 +66,7 @@ Options:
           |- data.js
         |- 耗时过长导致前端超时
           |- data.js
-          |- http.js # htpp文件控制响应行为, 如定义http header, 请求耗时等
+          |- http.js # http文件控制响应行为, 如定义http header, 请求耗时等
 ```
 
 配置好 mock 数据后启动 mock server
@@ -97,13 +97,13 @@ module.exports = {
 ```
 
 <p align="center">
-  <img src="../img/zh/1.png" alt="Mock Server" width="70%"/>
+  <img src="../img/zh/1.png" alt="Mock Server前端控制页面" width="70%"/>
 </p>
 
 可以直接请求访问`http://127.0.0.1:8888/$mock-api?api=api.target.com/api/login`验证 mock 数据是否正确配置
 
 <p align="center">
-  <img src="../img/zh/2.png" alt="Mock Server" width="70%"/>
+  <img src="../img/zh/2.png" alt="验证mock serve配置" width="70%"/>
 </p>
 
 ## 项目设置
@@ -142,7 +142,7 @@ devServer: {
         host: 'api.target.com'
       },
       onProxyReq: function(proxyReq, req, res) {
-        proxyReq.setHeader('host', 'api.mock.com');
+        proxyReq.setHeader('host', 'api.target.com');
       }
     }
   }
@@ -179,7 +179,7 @@ proxyTable: {
 那可以使用代理工具进行转发, 如[whistle](https://github.com/avwo/whistle)
 
 ```bash
-api.target.com/api 127.0.0.1:8888 # api.mock.com/api/*的请求都会被转发到mock服务器
+api.target.com/api 127.0.0.1:8888 # api.target.com/api/*的请求都会被转发到mock服务器
 ```
 
 ## 更多文档说明
@@ -200,7 +200,7 @@ npm install mock-server-local --save-dev
 
 在项目目录下新建 mock 目录用于存放 mock 数据配置
 
-```
+```bash
 |- xxx_proj
   |- mock
   |- package.json

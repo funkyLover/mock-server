@@ -19,7 +19,7 @@ mock 数据配置可以为一个接口预定义多个不同的响应数据
 ```
 
 <p align="center">
-  <img src="../img/zh/1.png" alt="Mock Server" width="70%"/>
+  <img src="../img/zh/1.png" alt="Mock Server前端控制面板" width="70%"/>
 </p>
 
 > 修改 mock 数据配置时, 不需要重新启动 mock server
@@ -54,12 +54,12 @@ mock 数据配置可以为一个接口预定义多个不同的响应数据
             |- data.js # 提示进行验证
 ```
 
-然后可以 mock 前端页面进行选择`http://127.0.0.1:8888/view/sets`
+然后可以在 mock 前端页面进行选择`http://127.0.0.1:8888/view/sets`
 
 对于需要针对流程进行验证测试的场景就可以进行快速切换
 
 <p align="center">
-  <img src="../img/zh/3.png" alt="Mock Server" width="80%"/>
+  <img src="../img/zh/3.png" alt="批量切换" width="80%"/>
 </p>
 
 在配置 mock 数据时, 可以先对针对接口层面定义不同的响应数据
