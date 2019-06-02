@@ -190,7 +190,7 @@ api.target.com 127.0.0.1:8080 # Local server for server front-end resource durin
 
 - [Switch mock data](./docs/en/switch.md)
 - [Configuration(data & http)](./docs/en/config.md)
-- [Proxy](./docs/en/config.md)
+- [Proxy](./docs/en/proxy.md)
 
 ## Recommend
 
