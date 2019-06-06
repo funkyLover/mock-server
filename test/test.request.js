@@ -295,3 +295,32 @@ test('mock with restful api 2', () => {
     server.close();
   });
 });
+
+test('mock with self handle', () => {
+  const data = { code: 1 };
+  getStatus.mockImplementationOnce(() => {
+    return {
+      mock: {
+        'api.mock.com/api/login': [
+          {
+            data: ctx => {
+              ctx.body = data;
+              return { selfHandle: true };
+            },
+            ...defaultConfig
+          }
+        ],
+        _set: {}
+      },
+      mockChecked: { 'api.mock.com/api/login': 0 },
+      setChecked: null
+    };
+  });
+  const { instance, server } = setEnv(8089);
+
+  return instance.get('/api/login').then(res => {
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual(data);
+    server.close();
+  });
+});
