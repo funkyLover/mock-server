@@ -114,3 +114,20 @@ module.exports = async (ctx) => {
 const xxx = require('xxx'); // npm依赖
 module.exports = {};
 ```
+
+## 直接使用ctx操作返回逻辑
+
+```js
+const send = require('koa-send');
+const static = '/path/to/static/path';
+
+module.exports = async (ctx) => {
+  await send(ctx, ctx.path, {
+    root: static
+  });
+
+  return {
+    selfHandle: true
+  };
+};
+```
