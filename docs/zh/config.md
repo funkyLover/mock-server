@@ -115,7 +115,7 @@ const xxx = require('xxx'); // npm依赖
 module.exports = {};
 ```
 
-## 直接使用ctx操作返回逻辑
+## 直接使用ctx处理响应逻辑
 
 ```js
 const send = require('koa-send');
