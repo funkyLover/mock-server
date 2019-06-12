@@ -145,7 +145,7 @@ devServer: {
         host: 'api.target.com' // not work
       },
       onProxyReq: function(proxyReq, req, res) {
-        proxyReq.setheader('host', 'api.target.com');
+        proxyReq.setHeader('host', 'api.target.com');
       }
     }
   }
