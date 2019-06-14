@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Mock from './views/Mock.vue';
-import MockSet from './views/Set.vue';
-import ProxyConfig from './views/proxy.vue';
+import Mock from './views/Mock';
+import MockSet from './views/Set';
+import ProxyConfig from './views/Proxy';
 
 Vue.use(Router);
 

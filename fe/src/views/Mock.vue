@@ -1,19 +1,28 @@
 <template>
   <div class="page-mock">
-    <el-collapse v-if="!isEmpty">
-      <el-collapse-item v-for="(val, key) in mocks" :key="key">
-        <template slot="title">
-          {{ key }}
-        </template>
-        <div v-for="(mock, i) in val" :key="mock.label">
-          <el-checkbox
-            :value="mockChecked[key] === i"
-            @change="bindCheckItem(key, i)"
-            >{{ mock.label }}</el-checkbox
-          >
-        </div>
-      </el-collapse-item>
-    </el-collapse>
+    <div v-if="!isEmpty">
+      <el-input
+        class="search"
+        placeholder="url to search"
+        prefix-icon="el-icon-search"
+        v-model="search"
+      >
+      </el-input>
+      <el-collapse>
+        <el-collapse-item v-for="(val, key) in mocks" :key="key">
+          <template slot="title">
+            <mk-highlight :str="search">{{ key }}</mk-highlight>
+          </template>
+          <div v-for="(mock, i) in val" :key="mock.label">
+            <el-checkbox
+              :value="mockChecked[key] === i"
+              @change="bindCheckItem(key, i)"
+              >{{ mock.label }}</el-checkbox
+            >
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+    </div>
     <div v-if="isEmpty" class="tips">
       No data yet, want
       <el-button type="text" @click="bindGenerate"
@@ -29,7 +38,9 @@ import { mapState } from 'vuex';
 export default {
   name: 'Page-Mock',
   data() {
-    return {};
+    return {
+      search: ''
+    };
   },
   computed: {
     ...mapState(['mocks', 'mockChecked']),
@@ -78,6 +89,9 @@ export default {
 
 <style lang="scss">
 .page-mock {
+  .search {
+    margin-bottom: 10px;
+  }
   .el-collapse-item__header {
     font-size: 18px;
     line-height: 1.2;
