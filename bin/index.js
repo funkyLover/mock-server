@@ -14,7 +14,7 @@ async function setupMockServer() {
   const port = cli.hasPortOpt ? cli.port : await getPort(cli.port);
 
   const isServerUp = startMock(dir, port);
-  const localIp = [`127.0.0.1:${port}`];
+  const localIp = [`localhost:${port}`, `127.0.0.1:${port}`];
 
   if (isServerUp) {
     const networks = os.networkInterfaces();
