@@ -9,7 +9,7 @@
       >
       </el-input>
       <el-collapse>
-        <el-collapse-item v-for="(val, key) in mocks" :key="key">
+        <el-collapse-item v-for="(val, key) in matchMocks" :key="key">
           <template slot="title">
             <mk-highlight :str="search">{{ key }}</mk-highlight>
           </template>
@@ -46,6 +46,18 @@ export default {
     ...mapState(['mocks', 'mockChecked']),
     isEmpty() {
       return _.isEmpty(this.mocks);
+    },
+    matchMocks() {
+      if (!this.search || this.search.length === 0) {
+        return this.mocks;
+      }
+      let mocks = {};
+      Object.keys(this.mocks).forEach(k => {
+        if (k.includes(this.search)) {
+          mocks[k] = this.mocks[k];
+        }
+      });
+      return mocks;
     }
   },
   methods: {

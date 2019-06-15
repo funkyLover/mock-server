@@ -50,7 +50,7 @@ export default {
 
       this.$requestId = setTimeout(() => {
         this.reqestMock();
-      }, 1000);
+      }, 1500);
     }
   }
 };
