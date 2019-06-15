@@ -8,7 +8,7 @@
         v-model="search"
       >
       </el-input>
-      <el-collapse>
+      <el-collapse v-if="isMockEmpty">
         <el-collapse-item v-for="(val, key) in matchMocks" :key="key">
           <template slot="title">
             <mk-highlight :str="search">{{ key }}</mk-highlight>
@@ -22,6 +22,7 @@
           </div>
         </el-collapse-item>
       </el-collapse>
+      <div v-else class="tips">no api match `{{ this.search }}`</div>
     </div>
     <div v-if="isEmpty" class="tips">
       No data yet, want
@@ -46,6 +47,9 @@ export default {
     ...mapState(['mocks', 'mockChecked']),
     isEmpty() {
       return _.isEmpty(this.mocks);
+    },
+    isMockEmpty() {
+      return Object.keys(this.matchMocks).length !== 0;
     },
     matchMocks() {
       if (!this.search || this.search.length === 0) {
