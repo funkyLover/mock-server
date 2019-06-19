@@ -1,6 +1,5 @@
 # dev data
 fe/mock/**
-fe/dist
 
 # IDE
 .vscode

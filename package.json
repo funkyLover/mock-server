@@ -1,6 +1,6 @@
 {
   "name": "mock-server-local",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Mock your apis with a node server",
   "main": "index.js",
   "bin": {
