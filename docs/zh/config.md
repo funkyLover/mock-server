@@ -15,6 +15,16 @@
 }
 ```
 
+## 响应数据
+
+```js
+// mock/****/data.js
+module.exports = {
+  code: '0',
+  msg: 'ok'
+};
+```
+
 ## 响应 html 页面
 
 ```js

@@ -15,6 +15,16 @@ Each interface mock data configuration directory, you can export the data to be 
 }
 ```
 
+## Response data
+
+```js
+// mock/****/data.js
+module.exports = {
+  code: '0',
+  msg: 'ok'
+};
+```
+
 ## Response html
 
 ```js
