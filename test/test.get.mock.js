@@ -56,7 +56,7 @@ test('return mock object when mock data is exist(example/simple)', () => {
       {
         label: 'option 1',
         data: { code: '0' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -136,7 +136,7 @@ test('return mock object when mock data is exist(example/status 404)', () => {
       {
         label: 'option 1',
         data: 'Not Found',
-        delay: 0.2,
+        delay: 0,
         status: 404,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -156,7 +156,7 @@ test('return mock object when mock data is exist(example/http keep alive)', () =
       {
         label: 'option 1',
         data: { code: '0' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -176,7 +176,7 @@ test('return mock object when mock data is exist(example/with proxy)', () => {
       {
         label: 'option 1',
         data: { code: '0' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -199,7 +199,7 @@ test('return mock object when mock data is exist(example/with proxy dir)', () =>
       {
         label: 'option 1',
         data: { code: '0' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -219,7 +219,7 @@ test('return mock object when mock data is exist(example/multiple options)', () 
       {
         label: 'option 1',
         data: { code: '0' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -230,7 +230,7 @@ test('return mock object when mock data is exist(example/multiple options)', () 
       {
         label: 'option 2',
         data: { code: '-1' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -243,7 +243,7 @@ test('return mock object when mock data is exist(example/multiple options)', () 
       {
         label: 'option 1',
         data: { code: '0' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -256,7 +256,7 @@ test('return mock object when mock data is exist(example/multiple options)', () 
       {
         label: 'fail',
         data: { code: '-1', msg: 'login fail' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -267,7 +267,7 @@ test('return mock object when mock data is exist(example/multiple options)', () 
       {
         label: 'success',
         data: { code: '0', msg: 'ok' },
-        delay: 0.2,
+        delay: 0,
         status: 200,
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
