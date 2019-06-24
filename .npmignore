@@ -1,6 +1,12 @@
 # dev data
 fe/mock/**
 
+jest.config.js
+docs
+example
+test
+.*
+
 # IDE
 .vscode
 
