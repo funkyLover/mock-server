@@ -43,10 +43,18 @@ export default {
     async reqestMock() {
       const { $req, $awaitTo } = this;
 
-      const req = $req({ url: '/$mock' });
-      const { data } = await $awaitTo(req);
+      const req = $req({ url: '/$mock', autoError: false });
+      const { data, err } = await $awaitTo(req);
 
-      this.$store.commit('updateMock', data);
+      if (data) {
+        this.error = false;
+        this.$store.commit('updateMock', data);
+      }
+
+      if (err && !this.error) {
+        this.error = true;
+        this.$message.error(`[${err.code}]${err.msg}`);
+      }
 
       this.$requestId = setTimeout(() => {
         this.reqestMock();
