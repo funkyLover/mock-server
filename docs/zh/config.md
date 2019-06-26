@@ -1,4 +1,49 @@
-# data & http 配置说明
+# mock 配置说明
+
+## api 文件目录配置
+
+```bash
+# mock api: api.target.com/api/login
+
+|- mock
+  |- api.target.com
+    |- api
+      |- login
+        |- 登录成功
+          |- data.js # data文件定义响应的数据
+        |- 登录失败
+          |- data.js
+        |- 耗时过长导致前端超时
+          |- data.js
+          |- http.js # http文件控制响应行为, 如定义http header, 请求耗时等
+```
+
+### restful api
+
+```bash
+# mock api: api.target.com/users/:id
+
+|- mock
+  |- api.target.com
+    |- users
+      |- :id
+        |- 返回用户信息
+          |- data.js # data文件定义响应的数据
+```
+
+### 通配符匹配
+
+```bash
+# mock api: api.target.com/(.*)
+
+|- mock
+  |- api.target.com
+    |- (.*)
+      |- 返回数据
+        |- data.js # data文件定义响应的数据
+```
+
+## data & http 配置
 
 每个接口 mock 数据配置目录下, 可以通过`data.js`导出要响应的数据, 而`http.js`则用于定义http响应行为
 
@@ -15,7 +60,7 @@
 }
 ```
 
-## 响应数据
+### 响应数据
 
 ```js
 // mock/****/data.js
@@ -25,7 +70,7 @@ module.exports = {
 };
 ```
 
-## 响应 html 页面
+### 响应 html 页面
 
 ```js
 // mock/****/data.js
@@ -47,7 +92,7 @@ module.exports = {
 };
 ```
 
-## 耗时接口
+### 耗时接口
 
 如希望模拟控制接口处理时间, 如耗时过长导致前端请求超时等场景, 可在`http.js`中配置
 
@@ -64,7 +109,7 @@ module.exports = {
 };
 ```
 
-## http 状态码
+### http 状态码
 
 如果需要模拟接口返回 200 以外的 http 状态码, 同样可以通过`http.js`中指定
 
@@ -78,7 +123,7 @@ module.exports = {
 };
 ```
 
-## 使用函数处理复杂逻辑
+### 使用函数处理复杂逻辑
 
 如果希望模拟接口的真实行为, 如进行参数检查, 或使用`mock.js`生成随机数据返回等
 
@@ -125,7 +170,7 @@ const xxx = require('xxx'); // npm依赖
 module.exports = {};
 ```
 
-## 直接使用ctx处理响应逻辑
+### 直接使用ctx处理响应逻辑
 
 ```js
 const send = require('koa-send');
