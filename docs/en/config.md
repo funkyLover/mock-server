@@ -1,4 +1,49 @@
-# Configuration(data & http)
+# Mock configuration
+
+## api folder
+
+```bash
+# mock api: api.target.com/api/login
+
+|- mock
+  |- api.target.com
+    |- api
+      |- login
+        |- login success
+          |- data.js # data.js defined res data
+        |- login fail
+          |- data.js
+        |- it takes too long
+          |- data.js
+          |- http.js # http can set res header, http status code, and control time cose
+```
+
+### restful api
+
+```bash
+# mock api: api.target.com/users/:id
+
+|- mock
+  |- api.target.com
+    |- users
+      |- :id
+        |- res user data
+          |- data.js
+```
+
+### Wildcard
+
+```bash
+# mock api: api.target.com/(.*)
+
+|- mock
+  |- api.target.com
+    |- (.*)
+      |- res data
+        |- data.js
+```
+
+## data & http
 
 Each interface mock data configuration directory, you can export the data to be responded by `data.js`, and `http.js` is used to define the http response behavior.
 
@@ -15,7 +60,7 @@ Each interface mock data configuration directory, you can export the data to be 
 }
 ```
 
-## Response data
+### Response data
 
 ```js
 // mock/****/data.js
@@ -25,7 +70,7 @@ module.exports = {
 };
 ```
 
-## Response html
+### Response html
 
 ```js
 // mock/****/data.js
@@ -47,7 +92,7 @@ module.exports = {
 };
 ```
 
-## Time consuming api
+### Time consuming api
 
 If you want to simulate the control interface processing time, such as too long time, the front-end request timeout, etc., can be configured in `http.js`
 
@@ -64,7 +109,7 @@ module.exports = {
 };
 ```
 
-## Http status code
+### Http status code
 
 If you need the analog interface to return an http status code other than 200, you can also specify it in `http.js`
 
@@ -78,7 +123,7 @@ module.exports = {
 };
 ```
 
-## Function
+### Function
 
 If you want to simulate the actual behavior of the interface, such as parameter checking, or use `mock.js` to generate random data returns, etc.
 
@@ -125,7 +170,7 @@ const xxx = require('xxx'); // npm dependency
 module.exports = {};
 ```
 
-## self handle ctx
+### self handle ctx
 
 ```js
 const send = require('koa-send');

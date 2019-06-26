@@ -185,7 +185,7 @@ api.target.com/api 127.0.0.1:8888 # api.target.com/api/*的请求都会被转发
 ## 更多文档说明
 
 - [切换响应的 mock 数据](./switch.md)
-- [data & http 配置说明](./config.md)
+- [mock 配置说明](./config.md)
 - [请求转发](./proxy.md)
 
 ## 推荐用法
