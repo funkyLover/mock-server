@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "clipboard": "^2.0.4",
     "element-ui": "^2.4.5",
     "normalize.css": "^8.0.1",
     "vue": "^2.5.22",
