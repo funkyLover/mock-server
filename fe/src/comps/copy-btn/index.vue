@@ -1,5 +1,5 @@
 <template>
-  <el-button size="small" class="btn-copy">
+  <el-button :size="size" :type="type" class="btn-copy">
     <slot></slot>
   </el-button>
 </template>
@@ -13,6 +13,14 @@ export default {
     content: {
       type: String,
       required: true
+    },
+    size: {
+      type: String,
+      default: 'small'
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   data() {

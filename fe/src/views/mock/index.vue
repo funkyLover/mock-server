@@ -11,7 +11,21 @@
       <el-collapse v-if="isMockEmpty">
         <el-collapse-item v-for="(val, key) in matchMocks" :key="key">
           <template slot="title">
-            <mk-highlight :str="search">{{ key }}</mk-highlight>
+            <mk-highlight :str="search" class="title">{{ key }}</mk-highlight>
+            <el-button
+              @click.stop="bindVerify($event, key)"
+              size="mini"
+              class="btn"
+              >verify</el-button
+            >
+            <copy-btn
+              :content="key"
+              size="mini"
+              class="btn last"
+              @click.native.stop
+              type="primary"
+              >copy</copy-btn
+            >
           </template>
           <div v-for="(mock, i) in val" :key="mock.label">
             <el-checkbox
@@ -39,8 +53,10 @@ import { mapState } from 'vuex';
 export default {
   name: 'Page-Mock',
   data() {
+    const base = `${window.location.protocol}//${window.location.host}`;
     return {
-      search: ''
+      search: '',
+      base
     };
   },
   computed: {
@@ -98,6 +114,10 @@ export default {
       }
       this.$store.commit('mockChecked', { key, index });
       this.reqestMockCheck(key, index);
+    },
+    bindVerify(e, key) {
+      const url = `${this.base}/$mock-api?api=${key}`;
+      window.open(url, '_blank');
     }
   }
 };
@@ -133,6 +153,17 @@ export default {
     .el-button {
       font-size: 20px;
       font-weight: 400;
+    }
+  }
+  .title {
+    flex: 1;
+  }
+  .btn {
+    padding: 5px 8px;
+    margin-right: 10px;
+
+    &.last {
+      margin-left: 0;
     }
   }
 }
