@@ -11,6 +11,13 @@
       <el-collapse v-if="isMockEmpty">
         <el-collapse-item v-for="(val, key) in matchMocks" :key="key">
           <template slot="title">
+            <el-checkbox
+              @click.stop
+              class="title-check"
+              :value="isTitleChecked(key)"
+              :disabled="isTitleCheckDisable(key)"
+              @change="bindTitleCheck(key)"
+            ></el-checkbox>
             <mk-highlight :str="search" class="title">{{ key }}</mk-highlight>
             <el-button
               @click.stop="bindVerify($event, key)"
@@ -105,6 +112,7 @@ export default {
       await $awaitTo(req);
     },
     bindCheckItem(key, index) {
+      console.log(this.mockChecked[key]);
       switch (this.mockChecked[key]) {
         case undefined:
           break;
@@ -118,6 +126,42 @@ export default {
     bindVerify(e, key) {
       const url = `${this.base}/$mock-api?api=${key}`;
       window.open(url, '_blank');
+    },
+    isTitleCheckDisable(key) {
+      const apiMocks = this.mocks[key];
+      const checked = this.mockChecked[key];
+
+      if (apiMocks.length === 1) {
+        return false;
+      }
+
+      if (checked !== -1 && (checked || checked === 0)) {
+        return false;
+      }
+
+      return true;
+    },
+    isTitleChecked(key) {
+      const checked = this.mockChecked[key];
+
+      if (checked !== -1 && (checked || checked === 0)) {
+        return true;
+      }
+
+      return false;
+    },
+    bindTitleCheck(key) {
+      const apiMocks = this.mocks[key];
+      const checked = this.mockChecked[key];
+
+      if (apiMocks.length === 1) {
+        return this.bindCheckItem(key, 0);
+      }
+
+      // 已勾选
+      if (checked !== -1 && (checked || checked === 0)) {
+        this.bindCheckItem(key, checked);
+      }
     }
   }
 };
@@ -143,6 +187,11 @@ export default {
         color: $main;
       }
     }
+  }
+
+  .title-check {
+    margin-right: 10px;
+    margin-top: 4px;
   }
 
   .tips {
