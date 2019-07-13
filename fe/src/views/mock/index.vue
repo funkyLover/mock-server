@@ -30,6 +30,8 @@
               size="mini"
               class="btn last"
               @click.native.stop
+              @success="$message.success('copy url: ' + key)"
+              @error="$message.error('error occurred')"
               type="primary"
               >copy</copy-btn
             >

@@ -48,6 +48,7 @@ export default {
       });
 
       this.cb.on('error', e => {
+        console.error(e);
         this.$emit('error');
       });
     }
