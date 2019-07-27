@@ -15,15 +15,11 @@
     </el-header>
     <el-container>
       <el-aside class="app-menu" width="20%">
-        <el-row>
-          <el-col :span="24">
-            <el-menu class="menu" :router="true" :default-active="$route.path">
-              <el-menu-item index="/mocks">Mock data</el-menu-item>
-              <el-menu-item index="/sets">Mock set</el-menu-item>
-              <el-menu-item index="/proxys">Proxy config</el-menu-item>
-            </el-menu>
-          </el-col>
-        </el-row>
+        <el-menu class="menu" :router="true" :default-active="$route.path">
+          <el-menu-item index="/mocks">Mock data</el-menu-item>
+          <el-menu-item index="/sets">Mock set</el-menu-item>
+          <el-menu-item index="/proxys">Proxy config</el-menu-item>
+        </el-menu>
       </el-aside>
       <el-main class="app-content">
         <router-view></router-view>
@@ -102,5 +98,9 @@ export default {
   background: $white;
   max-width: 300px;
   min-width: 200px;
+
+  .menu {
+    height: 100%;
+  }
 }
 </style>
