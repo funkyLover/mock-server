@@ -83,3 +83,27 @@ test('it will return from target server', () => {
     targetServer.close();
   });
 });
+
+test('it will return 500', () => {
+  getStatus.mockImplementation(() => {
+    return {
+      mock: {
+        'api.mock.com/api': [defaultMock, defaultMock],
+        _proxy: {
+          'api.mock.com': {}
+        }
+      },
+      mockChecked: { 'api.mock.com/api': 1 }
+    };
+  });
+
+  const { server, instance } = setupEnv(8883);
+
+  return instance.get('/api2').then(
+    () => {},
+    res => {
+      expect(res.response.status).toBe(500);
+      server.close();
+    }
+  );
+});
