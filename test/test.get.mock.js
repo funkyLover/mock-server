@@ -90,8 +90,8 @@ test('return mock object when mock data is exist(example/data in json file)', ()
   });
 });
 
-test('return mock object when mock data is exist(example/data in file(not js || json))', () => {
-  expect(getMock('./example/data in file(not js || json)')).toMatchObject({
+test('return mock object when mock data is exist(example/data in file(not js or json))', () => {
+  expect(getMock('./example/data in file(not js or json)')).toMatchObject({
     'api.mock.com': [
       {
         label: 'option 1',
