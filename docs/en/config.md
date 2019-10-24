@@ -31,6 +31,19 @@
           |- data.js
 ```
 
+**attention**: in Windows, you need to replace `:` with `%3A`, replace `*` with `%2A`
+
+```bash
+# windows mock api: api.target.com/users/:id
+
+|- mock
+  |- api.target.com
+    |- users
+      |- %3Aid
+        |- res user data
+          |- data.js # data文件定义响应的数据
+```
+
 ### Wildcard
 
 ```bash

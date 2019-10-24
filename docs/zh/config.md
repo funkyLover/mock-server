@@ -31,6 +31,19 @@
           |- data.js # data文件定义响应的数据
 ```
 
+**注意**: 由于Windows系统下不能以`:` 和 `*`等字符命名文件夹, 要定义restful api文件目录配置时, Windows下可使用`%3A`代替`:`, 可使用`%2A`代替`*`
+
+```bash
+# windows mock api: api.target.com/users/:id
+
+|- mock
+  |- api.target.com
+    |- users
+      |- %3Aid
+        |- 返回用户信息
+          |- data.js # data文件定义响应的数据
+```
+
 ### 通配符匹配
 
 ```bash
