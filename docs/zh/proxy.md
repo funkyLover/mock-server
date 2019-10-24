@@ -26,7 +26,10 @@ api.target.com/api xxx.xx.x.xxx
 
 // proj/mock/proxy.js
 module.exports = {
-  // 这里可以指定ip也可以指定域名, 都需要带上协议类型
+  // 这样配置之后, 所有api.target.com域名的请求, 一旦没有匹配中mock, 请求就会转发到线上服务器
+  'api.target.com': true,
+
+  // 这里还可以指定ip也可以指定域名, 都需要带上协议类型
   'api.target.com': 'https://xxx.xx.x.xxx'
 }
 ```
@@ -40,6 +43,4 @@ api.target.com/api 127.0.0.1:8888
 
 当请求的接口在 mock server 中没有配置或对应的接口 mock 没有被勾选要响应的数据时
 
-接口请求就会被转发到目标 ip 或 url
-
-而如果`proxy.js`也没有配置转发规则, 则会直接请求线上
+如果`proxy.js`设置了转发规则, 接口请求就会被转发到线上服务器或目标 ip 机器

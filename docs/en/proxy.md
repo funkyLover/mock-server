@@ -27,7 +27,10 @@ Just create a new `proxy.js` file in the mock directory.
 
 // proj/mock/proxy.js
 module.exports = {
-  // Here you can specify ip or specify the domain name, you need to bring the protocol type
+  // the request from api.target.com will be forwarded to the online server
+  'api.target.com': true,
+
+  // also you can specify ip or specify the domain name, you need to bring the protocol type
   'api.target.com': 'https://xxx.xx.x.xxx'
 }
 ```
@@ -41,6 +44,4 @@ api.target.com/api 127.0.0.1:8888
 
 When the requested interface is not configured in the mock server or the corresponding interface mock is not checked for data to be responded to
 
-The interface request will be forwarded to the target ip or url
-
-And if `proxy.js` is not configured with forwarding rules, it will directly request online.
+The interface request will be forwarded to online server / target ip if `proxy.js` is configured.
