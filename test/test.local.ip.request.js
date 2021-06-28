@@ -4,7 +4,7 @@ const Koa = require('koa');
 const axios = require('axios');
 const { getStatus, setStatus } = require('../lib/server/status');
 const localMiddleware = require('../lib/server/local');
-const mockMiddleware = require('../lib/server/mock');
+const { mockMiddleware } = require('../lib/server/mock');
 const send = require('koa-send');
 
 jest.mock('../lib/server/status');
